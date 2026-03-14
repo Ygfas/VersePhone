@@ -3,6 +3,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 const products = [
   { name: "Y05", image: "/test1.png", status: "baru" },
@@ -64,10 +65,10 @@ export const FloatingNav = ({ navItems, className }) => {
             onAnimationComplete={() => { isAnimatingRef.current = false; }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="fixed top-[72px] left-0 w-full z-[4999]"
+            className="fixed top-0 left-0 w-full z-[50]"
           >
-            <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-neutral-950 dark:border-white/10">
-              <div className="max-w-[1400px] mx-auto px-10 pt-8 pb-6">
+            <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-neutral-800 dark:border-white/10">
+              <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
 
                 {/* Product row — 7 visible, scroll right if more */}
                 <div className="flex gap-10 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -82,11 +83,11 @@ export const FloatingNav = ({ navItems, className }) => {
                         stiffness: 500,
                         damping: 30,
                       }}
-                      className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-2*1rem)/2)] sm:w-[calc((100%-6*1rem)/7)]"
+                      className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-2*1rem)/2)] sm:w-[calc((100%-11*1rem)/6)]"
                     // mobile: 3 visible | desktop sm+: 7 visible
                     >
                       {/* Image container — taller aspect ratio for phones */}
-                      <div className="w-full aspect-[3/4] rounded-[20px] bg-neutral-50 flex items-center justify-center p-15 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 group-hover/card:shadow-xl dark:bg-neutral-900 dark:group-hover/card:bg-neutral-800">
+                      <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-8 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 group-hover/card:shadow-xl dark:bg-neutral-800 dark:group-hover/card:bg-neutral-800">
                         <img
                           src={hp.image}
                           alt={hp.name}
@@ -141,7 +142,7 @@ export const FloatingNav = ({ navItems, className }) => {
         >
           <div className="flex items-center gap-1">
             {navItems?.map((navItem, idx) => {
-              const isProduct = navItem.name.toLowerCase() === "product";
+              const isProduct = navItem.name.toLowerCase() === "products";
 
               return (
                 <div
@@ -153,7 +154,7 @@ export const FloatingNav = ({ navItems, className }) => {
                   <Link
                     href={navItem.link}
                     className={cn(
-                      "relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                      "relative flex items-center gap-1 rounded-full px-4 py-2 text-md font-medium transition-colors",
                       isProduct && isProductOpen
                         ? "bg-neutral-100 text-neutral-900 dark:bg-white/10 dark:text-white"
                         : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-white/10 dark:hover:text-white"
@@ -170,12 +171,24 @@ export const FloatingNav = ({ navItems, className }) => {
           <div className="h-5 w-px bg-neutral-200 dark:bg-white/10" />
 
           <Link href="/login">
-            <button className="relative rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-neutral-800 hover:shadow-lg hover:shadow-neutral-900/20 dark:bg-white dark:text-black dark:hover:bg-neutral-100">
+            <button className="relative rounded-full bg-neutral-900 px-4 py-2 text-md font-medium text-white transition-all hover:bg-neutral-800 hover:shadow-lg hover:shadow-neutral-900/20 dark:bg-white dark:text-black dark:hover:bg-neutral-100">
               <span>Login</span>
             </button>
+          </Link>
+          <Link
+            href="/cart"
+            className="relative p-3 text-neutral-600 hover:text-blue-600 dark:text-neutral-300 dark:hover:text-blue-400 transition-all duration-200 transform hover:scale-110"
+          >
+            {/* Ukuran icon naik dari w-5 ke w-6.5 (sekitar 26px) */}
+            <ShoppingCart className="w-[22px] h-[22px]" />
+
+            {/* Badge Angka: lebih besar dan posisinya disesuaikan agar tidak menutupi icon utama */}
+            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-extrabold text-white shadow-sm ring-2 ring-white dark:ring-neutral-900">
+              2
+            </span>
           </Link>
         </motion.div>
       </div>
     </>
   );
-};
+}

@@ -1,4 +1,6 @@
 import { HeroParallax } from "@/components/ui/hero-parallax"
+
+
 export default function Hero() {
     const products = [
         {
@@ -97,6 +99,7 @@ export default function Hero() {
     ];
 return(
     <>
+        
         <HeroParallax products={products} />;
     </>
 )

@@ -35,7 +35,7 @@ export default function LoginForm() {
 
                 {/* Header Section */}
                 <div className="flex flex-col space-y-1.5 mb-6 text-left">
-                    <h3 className="text-2xl font-semibold leading-none tracking-tight">Sign Up </h3>
+                    <h3 className="text-2xl font-semibold leading-none tracking-tight">Login </h3>
                     <p className="text-sm text-muted-foreground">
                         Enter your credentials to access your account.
                     </p>
@@ -45,15 +45,7 @@ export default function LoginForm() {
                 <div>
                     <form>
                         <div className="grid w-full items-center gap-4 text-left">
-                            <div className="flex flex-col space-y-1.5">
-                                <label htmlFor="name" className="text-sm font-medium">Name</label>
-                                <input id="name" placeholder="Your full name" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-                            </div>
-
-                            <div className="flex flex-col space-y-1.5">
-                                <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
-                                <input id="phone" type="tel" placeholder="0812xxxx" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-                            </div>
+                           
 
                             <div className="flex flex-col space-y-1.5">
                                 <label htmlFor="email" className="text-sm font-medium">Email or Username</label>
@@ -61,7 +53,7 @@ export default function LoginForm() {
                             </div>
 
                             <div className="flex flex-col space-y-1.5">
-                                <label htmlFor="password" shake-b className="text-sm font-medium">Password</label>
+                                <label htmlFor="password" className="text-sm font-medium">Password</label>
                                 <input id="password" type="password" placeholder="Enter your password" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
                             </div>
                         </div>
@@ -71,16 +63,14 @@ export default function LoginForm() {
                 {/* Footer Section */}
                 <div className="flex justify-between items-center pt-6 gap-2">
 
-                    <Button className="flex-1"><Link href="/">Sign Up</Link></Button>
+                    <Button className="flex-1" asChild><Link href="/products">Login</Link></Button>
                 </div>
                 <div className="flex justify-center items-center my-5">
-                    <h1>Sudah punya akun?
-                        <Link href="/login" className=" text-blue-500 underline"> Login di sini</Link>
-                    </h1>
+                    <h1>Belum punya akun? <Link href="/register" className="text-blue-500 underline">Daftar di sini</Link></h1>
                 </div>
 
                 {/* Efek Animasi Border */}
-                <ShineBorder duration={8} size={100} />
+                <ShineBorder duration={8} size={200} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
             </div>
         </div>
     );
