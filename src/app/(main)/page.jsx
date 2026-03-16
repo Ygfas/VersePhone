@@ -11,25 +11,25 @@ import Content from "@/components/main/content";
 
 
 export default function Home() {
- 
+
 
   return (
     <>
       {/* Navbar dan ScrollProgress harus sejajar, bukan di dalam pembungkus konten */}
-     
-      
+
+
       <ScrollProgress className="fixed top-0 left-0 right-0 z-[5000]" />
 
       <div className="relative w-full">
-        
+
         <div className="h-[2500px]">
           <Hero />
-         <Content />
-      <InteractiveFooter />
+          <Content />
+          <InteractiveFooter />
         </div>
       </div>
 
-      
+
     </>
   );
 }

@@ -41,9 +41,9 @@ const FloatingSearch = () => {
 
     return (
         
-        <div className="fixed top-25 left-7 lg:left-20 xl:left-32 lg:top-25 z-[100] flex flex-col items-start gap-2">
+        <div className="fixed top-25 left-7 lg:left-20 xl:left-32 lg:top-25 z-[10] flex flex-col items-start gap-2">
 
-            {/* Container Bar Pencarian */}
+         
             <AnimatePresence mode="wait">
                 {isOpen ? (
                     <motion.div
