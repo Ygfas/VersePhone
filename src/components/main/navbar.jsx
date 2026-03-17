@@ -15,7 +15,7 @@ const navItems = [
     },
     {
         name: "Products",
-        link: "/login",
+        link: "/",
         icon: <IconBrandProducthunt className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -59,7 +59,7 @@ export default function Navbar() {
             </div>
 
 
-            <div className="fixed top-6 right-6 z-[5000]">
+            <div className="fixed top-6 right-6 z-[55]">
 
                 <AnimatedThemeToggler
                     className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-neutral-200 dark:border-white/[0.2] shadow-lg"

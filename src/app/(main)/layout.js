@@ -20,11 +20,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Navbar />
+      {/* 1. Navbar HARUS di dalam body */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-100 dark:bg-slate-900`}
       >
-        {children}
+        <Navbar />
+
+        {/* 2. children adalah isi dari page.jsx (termasuk products) */}
+        <main>{children}</main>
       </body>
     </html>
   );

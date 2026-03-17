@@ -13,6 +13,7 @@ const products = [
   { name: "V60 Lite 5G", image: "/test1.png", status: "baru" },
   { name: "V60 Lite", image: "/test1.png", status: "baru" },
   { name: "V60", image: "/test1.png", status: "baru" },
+  { name: "V60", image: "/test1.png", status: "baru" },
 ];
 
 export const FloatingNav = ({ navItems, className }) => {
@@ -65,13 +66,13 @@ export const FloatingNav = ({ navItems, className }) => {
             onAnimationComplete={() => { isAnimatingRef.current = false; }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="fixed top-0 left-0 w-full z-[50]"
+            className="fixed top-0 left-0 w-full z-[30]"
           >
             <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-neutral-800 dark:border-white/10">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
 
                 {/* Product row — 7 visible, scroll right if more */}
-                <div className="flex gap-10 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex gap-12 xl:gap-28 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {products.map((hp, i) => (
                     <motion.div
                       key={i}
@@ -83,7 +84,7 @@ export const FloatingNav = ({ navItems, className }) => {
                         stiffness: 500,
                         damping: 30,
                       }}
-                      className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-2*1rem)/2)] sm:w-[calc((100%-11*1rem)/6)]"
+                      className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-8*1rem)/3)] sm:w-[calc((100%-40*1rem)/6)]"
                     // mobile: 3 visible | desktop sm+: 7 visible
                     >
                       {/* Image container — taller aspect ratio for phones */}
@@ -133,7 +134,7 @@ export const FloatingNav = ({ navItems, className }) => {
       </AnimatePresence>
 
       {/* Floating pill nav */}
-      <div className={cn("flex max-w-fit fixed top-5 inset-x-0 mx-auto z-[5000] items-center justify-center", className)}>
+      <div className={cn("flex max-w-fit fixed top-5 inset-x-0 mx-auto z-[40] items-center justify-center", className)}>
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
