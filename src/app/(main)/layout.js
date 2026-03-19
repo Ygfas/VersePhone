@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       {/* 1. Navbar HARUS di dalam body */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-100 dark:bg-slate-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-100 dark:bg-neutral-900`}
       >
         <Navbar />
 

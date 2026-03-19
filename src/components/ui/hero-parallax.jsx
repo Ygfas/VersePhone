@@ -70,7 +70,7 @@ export const Header = () => {
       </p>
       <div className="mt-10">
         <InteractiveHoverButton asChild className="shadow-lg">
-          <Link href="/login">Mulai Sekarang</Link>
+          <Link href="/login">Belanja Sekarang</Link>
         </InteractiveHoverButton>
       </div>
     </div>

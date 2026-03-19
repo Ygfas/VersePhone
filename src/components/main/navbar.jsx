@@ -15,7 +15,7 @@ const navItems = [
     },
     {
         name: "Products",
-        link: "/",
+        link: "/products",
         icon: <IconBrandProducthunt className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -53,7 +53,7 @@ export default function Navbar() {
 
     return (
         <div className="relative">
-            <div className="relative flex h-[10vh] flex-col overflow-y-auto">
+            <div className="relative flex h-[10vh] flex-col overflow-y-auto ">
 
 
             </div>

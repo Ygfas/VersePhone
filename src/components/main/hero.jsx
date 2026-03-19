@@ -16,17 +16,17 @@ export default function Hero() {
                 "https://www.aceternity.com/images/products/thumbnails/new/cursor.png",
         },
         {
-            title: "Rogue",
-            link: "https://userogue.com",
+            title: "Vivo",
+            link: "https://vivi.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/rogue.png",
+                "hero/vivo.png",
         },
 
         {
-            title: "Editorially",
-            link: "https://editorially.org",
+            title: "Samsung",
+            link: "https://www.samsung.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/editorially.png",
+                "/hero/samsung.png",
         },
         {
             title: "Editrix AI",

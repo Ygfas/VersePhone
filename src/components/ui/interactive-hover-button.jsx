@@ -1,4 +1,5 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShoppingCart } from "lucide-react";
+import { IconShoppingCartHeart } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
 export function InteractiveHoverButton({ children, className, ...props }) {

@@ -49,7 +49,7 @@ export default function Products() {
         <div className="relative min-h-screen bg-[#F8FAFC]">
             <FloatingSearch />
 
-            <div className="pt-10 pb-24 lg:px-20 bg-slate-100/50 dark:bg-slate-950">
+            <div className="pt-10 pb-24 lg:px-20 bg-slate-100/50 dark:bg-slate-900">
                 <FilterItems />
 
                 {/* Gunakan Framer Motion untuk grid agar muncul satu per satu saat page load */}

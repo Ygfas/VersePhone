@@ -65,8 +65,9 @@ export default function CardItems({ item }) {
               <DialogDescription disableLayoutAnimation className="text-base leading-relaxed text-slate-600 dark:text-slate-400">{item.description}</DialogDescription>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="mt-8">
-              <button className="w-full rounded-2xl bg-slate-900 py-4 font-bold text-white transition-all hover:bg-black active:scale-[0.98] dark:bg-white dark:text-black">Beli Sekarang</button>
+            <motion.div variants={itemVariants} className="mt-8 flex justify-center ">
+              <button className="w-[25vw] rounded-l-2xl bg-orange-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Tambah Pesanan</button>
+              <button className="w-[25vw] rounded-r-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Beli Sekarang</button>
             </motion.div>
           </div>
         </motion.div>

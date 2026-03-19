@@ -68,7 +68,7 @@ export const FloatingNav = ({ navItems, className }) => {
             onMouseLeave={handleMouseLeave}
             className="fixed top-0 left-0 w-full z-[30]"
           >
-            <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-neutral-800 dark:border-white/10">
+            <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-black dark:border-white/10">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
 
                 {/* Product row — 7 visible, scroll right if more */}
@@ -88,7 +88,7 @@ export const FloatingNav = ({ navItems, className }) => {
                     // mobile: 3 visible | desktop sm+: 7 visible
                     >
                       {/* Image container — taller aspect ratio for phones */}
-                      <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-8 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 group-hover/card:shadow-xl dark:bg-neutral-800 dark:group-hover/card:bg-neutral-800">
+                      <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-8 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 group-hover/card:shadow-xl dark:bg-black dark:group-hover/card:bg-neutral-900">
                         <img
                           src={hp.image}
                           alt={hp.name}
@@ -112,7 +112,7 @@ export const FloatingNav = ({ navItems, className }) => {
                 </div>
               </div>
 
-              {/* Bottom actions */}
+          
               <div className="flex justify-center gap-8 py-5 border-t border-neutral-100 dark:border-white/10">
                 <button className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-all duration-200 hover:gap-3">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,17 +176,17 @@ export const FloatingNav = ({ navItems, className }) => {
               <span>Login</span>
             </button>
           </Link>
-          <Link
-            href="/cart"
-            className="relative p-3 text-neutral-600 hover:text-blue-600 dark:text-neutral-300 dark:hover:text-blue-400 transition-all duration-200 transform hover:scale-110"
-          >
-            {/* Ukuran icon naik dari w-5 ke w-6.5 (sekitar 26px) */}
-            <ShoppingCart className="w-[22px] h-[22px]" />
-
-            {/* Badge Angka: lebih besar dan posisinya disesuaikan agar tidak menutupi icon utama */}
-            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-extrabold text-white shadow-sm ring-2 ring-white dark:ring-neutral-900">
-              2
-            </span>
+          <Link href="/cart">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="relative p-3 text-neutral-600 hover:text-blue-600 dark:text-neutral-300 transition-colors"
+            >
+              <ShoppingCart className="w-[22px] h-[22px]" />
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-extrabold text-white ring-2 ring-white">
+                2
+              </span>
+            </motion.button>
           </Link>
         </motion.div>
       </div>
