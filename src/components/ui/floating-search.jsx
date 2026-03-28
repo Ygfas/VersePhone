@@ -53,7 +53,7 @@ const FloatingSearch = () => {
                         exit={{ width: 48, opacity: 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         style={{ originX: 0 }}
-                        className={`flex items-center gap-3 rounded-full border bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-2xl transition-all ${isFocused ? "border-blue-500 ring-4 ring-blue-500/10" : "border-gray-200"
+                        className={`flex items-center gap-3 rounded-full border bg-white/95  backdrop-blur-md px-4 py-2.5 shadow-2xl transition-all ${isFocused ? "border-blue-500 ring-4 ring-blue-500/10" : "border-gray-200"
                             }`}
                     >
                         <Search className="h-4 w-4 shrink-0 text-gray-400" />
@@ -65,7 +65,7 @@ const FloatingSearch = () => {
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => setIsFocused(false)}
                             placeholder="Cari produk..."
-                            className="min-w-0 flex-1 bg-transparent text-sm font-medium text-gray-800 focus:outline-none"
+                            className="min-w-0 flex-1 bg-transparent text-md font-medium text-gray-800 focus:outline-none p-2"
                         />
                         <button
                             onClick={() => query ? setQuery("") : setIsOpen(false)}
@@ -82,14 +82,14 @@ const FloatingSearch = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsOpen(true)}
-                        className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 shadow-xl text-white"
+                        className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 shadow-xl text-white"
                     >
                         <Search className="h-5 w-5" />
                     </motion.button>
                 )}
             </AnimatePresence>
 
-            {/* Dropdown Hasil Pencarian */}
+         
             <AnimatePresence>
                 {isOpen && filtered.length > 0 && (
                     <motion.div

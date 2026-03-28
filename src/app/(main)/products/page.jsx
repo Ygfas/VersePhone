@@ -16,14 +16,14 @@ const items = [
     {
         id: 2,
         image: '/test1.png',
-        title: 'VIVO Y21',
+        title: 'VIVO Y21d',
         subtitle: 'Harga Jual',
         description: 'VIVO Y21 hadir dengan desain elegan dan performa handal...',
     },
     {
         id: 3,
         image: '/test1.png',
-        title: 'VIVO Y21',
+        title: 'VIVO x300',
         subtitle: 'Harga Jual',
         description: 'VIVO Y21 hadir dengan desain elegan dan performa handal...',
     },
@@ -49,15 +49,15 @@ export default function Products() {
         <div className="relative min-h-screen bg-[#F8FAFC]">
             <FloatingSearch />
 
-            <div className="pt-10 pb-24 lg:px-20 bg-slate-100/50 dark:bg-slate-900">
+            <div className="pt-10 pb-24 lg:px-20 bg-slate-100/50 dark:bg-neutral-900">
                 <FilterItems />
 
-                {/* Gunakan Framer Motion untuk grid agar muncul satu per satu saat page load */}
+               
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="grid grid-cols-2 xl:grid-cols-3 gap-8 mx-12 mt-10"
+                    className="grid grid-cols-2 xl:grid-cols-3 gap-8 mx-12 "
                 >
                     {items.map((item, index) => (
                         <Dialog key={item.id}>
@@ -65,9 +65,9 @@ export default function Products() {
                                 <motion.div
                                     whileHover={{ y: -8 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                                    className="break-inside-avoid bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-[24px] overflow-hidden cursor-pointer"
+                                    className="break-inside-avoid bg-white dark:bg-neutral-900 border border-slate-200/60 dark:border-white/5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-[24px] overflow-hidden cursor-pointer"
                                 >
-                                    <figure className="relative w-full h-auto bg-slate-50 dark:bg-slate-800/50 flex justify-center p-8 overflow-hidden">
+                                    <figure className="relative w-full h-auto bg-slate-50 dark:bg-neutral-800/50 flex justify-center p-8 overflow-hidden">
                                         <motion.img
                                             whileHover={{ scale: 1.1 }}
                                             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}

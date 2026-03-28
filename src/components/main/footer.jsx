@@ -40,9 +40,9 @@ const socialIconVariants = {
 
 // Data Navigasi & Sosial Media (Bisa dipindah ke file terpisah)
 const footerLinks = [
-    { name: "Product", links: ["Features", "Integrations", "Pricing", "Status"] },
-    { name: "Company", links: ["About Us", "Careers", "Press", "News"] },
-    { name: "Resources", links: ["Blog", "Newsletter", "Events", "Help Center"] },
+    { name: "Product", links: ["Apple", "Samsung", "Motorola", "Xiaomi","More"] },
+    { name: "Company", links: ["About Us", "Team", "Social Media", "News","Update"] },
+    { name: "Resources", links: ["Blog", "News letter", "Events", "Help Center"] },
 ];
 
 const socialMedias = [
@@ -79,13 +79,13 @@ export const InteractiveFooter = ({ className }) => {
                         <div className="mt-6 flex max-w-sm items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-1 shadow-inner shadow-neutral-100 dark:shadow-black/20">
                             <input
                                 type="email"
-                                placeholder="you@email.com"
+                                placeholder="you123@email.com"
                                 className="w-full bg-transparent px-4 py-2 text-sm text-neutral-900 outline-none dark:text-white placeholder:text-neutral-400"
                             />
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="flex size-10 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
+                                className="flex w-20 size-10 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-neutral-800 dark:bg-white dark:text-neutral-900"
                             >
                                 <FiArrowRight />
                             </motion.button>
@@ -124,7 +124,7 @@ export const InteractiveFooter = ({ className }) => {
                     className="mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-800 flex flex-col md:flex-row items-center justify-between gap-6"
                 >
                     <p className="text-xs text-neutral-500 dark:text-neutral-500">
-                        © {new Date().getFullYear()} Interactive Inc. All rights reserved.
+                        © {new Date().getFullYear()} VersePhone Inc. All rights reserved.
                     </p>
 
                     <div className="flex items-center gap-4">
