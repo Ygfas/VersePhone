@@ -4,60 +4,64 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, ShoppingBag, Trash2, ChevronDown } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
-export default function CartComponent() {
-    const [cart, setCart] = useState([
-        { 
-            id: 1, 
-            name: "X300 Pro", 
-            basePrice: 8000000, 
-            price: 8500000, 
-            image: "/test2.png", 
-            qty: 2, 
-            checked: false,
-            selectedColor: 'Black',
-            selectedStorage: '256GB',
-            selectedRam: '12GB',
-            options: {
-                colors: ['Phantom Black', 'Ice Blue', 'Deep Red'],
-                variants: [
-                    { ram: '8GB', storage: '128GB', extra: 0 },
-                    { ram: '12GB', storage: '256GB', extra: 500000 },
-                    { ram: '12GB', storage: '512GB', extra: 1500000 },
-                ]
-            }
-        },
-        { 
-            id: 2, 
-            name: "Y05", 
-            basePrice: 1900000, 
-            price: 2100000, 
-            image: "/test1.png", 
-            qty: 1, 
-            checked: false,
-            selectedColor: 'Glowing White',
-            selectedStorage: '128GB',
-            selectedRam: '4GB',
-            options: {
-                colors: ['Glowing White', 'Midnight Blue'],
-                variants: [
-                    { ram: '4GB', storage: '64GB', extra: 0 },
-                    { ram: '4GB', storage: '128GB', extra: 200000 },
-                ]
-            }
-        },
-    ]);
+// --- DATA AWAL (Disimpan di luar komponen agar rapi) ---
+export const INITIAL_CART = [
+    {
+        id: 1,
+        name: "X300 Pro",
+        basePrice: 8000000,
+        price: 8500000,
+        image: "/test2.png",
+        qty: 2,
+        checked: false,
+        selectedColor: 'Phantom Black',
+        selectedStorage: '256GB',
+        selectedRam: '12GB',
+        options: {
+            colors: ['Phantom Black', 'Ice Blue', 'Deep Red'],
+            variants: [
+                { ram: '8GB', storage: '128GB', extra: 0 },
+                { ram: '12GB', storage: '256GB', extra: 500000 },
+                { ram: '12GB', storage: '512GB', extra: 1500000 },
+            ]
+        }
+    },
+    {
+        id: 2,
+        name: "Y05",
+        basePrice: 1900000,
+        price: 2100000,
+        image: "/test1.png",
+        qty: 1,
+        checked: false,
+        selectedColor: 'Glowing White',
+        selectedStorage: '128GB',
+        selectedRam: '4GB',
+        options: {
+            colors: ['Glowing White', 'Midnight Blue'],
+            variants: [
+                { ram: '4GB', storage: '64GB', extra: 0 },
+                { ram: '4GB', storage: '128GB', extra: 200000 },
+            ]
+        }
+    },
+];
 
+export default function CartComponent() {
+    // State untuk mengelola data yang bisa berubah
+    const [cart, setCart] = useState(INITIAL_CART);
     const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-    // Fungsi Update Varian & Harga
+    // --- LOGIKA FUNGSI ---
+
     const updateVariant = (id, ram, storage, extra) => {
         setCart(prev => prev.map(item => {
             if (item.id === id) {
-                return { 
-                    ...item, 
-                    selectedRam: ram, 
-                    selectedStorage: storage, 
-                    price: item.basePrice + extra 
+                return {
+                    ...item,
+                    selectedRam: ram,
+                    selectedStorage: storage,
+                    price: item.basePrice + extra
                 };
             }
             return item;
@@ -87,6 +91,7 @@ export default function CartComponent() {
         setDeleteConfirm(null);
     };
 
+    // Ini adalah const biasa karena nilainya "diturunkan" dari state cart
     const totalHarga = cart.filter(i => i.checked).reduce((acc, i) => acc + (i.price * i.qty), 0);
 
     return (
@@ -95,8 +100,8 @@ export default function CartComponent() {
                 <div className="w-full px-4 sm:px-10 lg:px-20">
                     <div className="flex justify-between items-center mb-6 sm:mb-10">
                         <h1 className="text-3xl sm:text-5xl font-black tracking-tighter">Keranjang Anda</h1>
-                        <button onClick={() => setCart([])} className="text-red-500 font-bold text-sm bg-red-50 hover:bg-red-100 px-5 py-2 rounded-full transition-all">
-                            Bersihkan
+                        <button onClick={() => setCart([])} className="text-red-500 gap-2 flex justify-center font-bold text-md bg-red-50 hover:bg-red-100 px-5 py-2 rounded-full transition-all">
+                            Bersihkan<Trash2 className='text-sm w-5 h-5'></Trash2>
                         </button>
                     </div>
 
@@ -141,13 +146,10 @@ export default function CartComponent() {
 
                                         {/* KOLOM 2: Info Produk */}
                                         <div className="flex flex-col gap-1 sm:gap-3 flex-1 min-w-0">
-
-                                            {/* Nama */}
                                             <h3 className="text-sm sm:text-4xl font-black tracking-tighter truncate leading-tight">
                                                 {item.name}
                                             </h3>
 
-                                            {/* Dropdown Warna */}
                                             <div className="relative w-fit">
                                                 <select
                                                     value={item.selectedColor}
@@ -159,7 +161,6 @@ export default function CartComponent() {
                                                 <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-neutral-400 pointer-events-none" />
                                             </div>
 
-                                            {/* Dropdown RAM & Storage */}
                                             <div className="relative w-fit">
                                                 <select
                                                     value={`${item.selectedRam}/${item.selectedStorage}`}
@@ -179,11 +180,9 @@ export default function CartComponent() {
                                                 <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-neutral-400 pointer-events-none" />
                                             </div>
 
-                                            {/* Harga */}
                                             <p className="text-blue-600 font-black text-sm sm:text-3xl">
                                                 Rp {item.price.toLocaleString('id-ID')}
                                             </p>
-
                                         </div>
 
                                         {/* KOLOM 3: Stepper */}
@@ -219,7 +218,6 @@ export default function CartComponent() {
                                                 </button>
                                             </div>
                                         </div>
-
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
@@ -233,30 +231,24 @@ export default function CartComponent() {
                 </div>
             </div>
 
-            {/* Footer Summary (Sticky Bottom) */}
-            <div className="fixed bottom-0 border-t-2 left-0 right-0 bg-white dark:bg-neutral-900/80 backdrop-blur-xl  border-neutral-4400 dark:border-neutral-800 p-6 sm:p-4 z-50">
+            {/* Footer Summary */}
+            <div className="fixed bottom-0 border-t-2 left-0 right-0 bg-white dark:bg-neutral-900/80 backdrop-blur-xl border-neutral-200 dark:border-neutral-800 p-6 sm:p-4 z-50">
                 <div className="px-6 sm:px-10 flex items-center justify-between gap-10">
-
-                    {/* SISI KIRI: Total Pembayaran (Desktop) */}
                     <div className="hidden sm:block">
                         <p className="text-neutral-500 font-bold uppercase tracking-[0.2em] text-xs mb-1">Total Pembayaran</p>
                         <div className="flex items-baseline gap-2">
                             <span className="text-5xl font-black tracking-tighter text-blue-600">
                                 Rp {totalHarga.toLocaleString('id-ID')}
                             </span>
-
                         </div>
                     </div>
 
-                    {/* SISI KANAN: Button & Mobile Summary */}
                     <div className="flex-1 sm:flex-none w-full sm:w-auto">
-                        {/* Mobile Summary Only */}
                         <div className="sm:hidden flex justify-between items-center mb-4 px-2">
                             <span className="font-bold text-neutral-500 uppercase text-xs tracking-widest">Total</span>
                             <span className="font-black text-2xl text-blue-600">Rp {totalHarga.toLocaleString('id-ID')}</span>
                         </div>
 
-                        {/* Tombol Checkout - Dibuat lebih lebar di desktop (w-96) agar proporsional */}
                         <button className="w-full sm:w-[400px] py-5 sm:py-8 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-[28px] sm:rounded-[40px] font-black text-xl sm:text-3xl shadow-2xl shadow-blue-500/10 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group">
                             <span>Checkout Sekarang</span>
                             <div className="hidden sm:flex w-10 h-10 bg-blue-600 rounded-full items-center justify-center group-hover:translate-x-1 transition-transform">
@@ -264,7 +256,6 @@ export default function CartComponent() {
                             </div>
                         </button>
                     </div>
-
                 </div>
             </div>
 
@@ -278,7 +269,7 @@ export default function CartComponent() {
                             <h3 className="text-2xl font-black mb-2 tracking-tighter">Hapus Item?</h3>
                             <p className="text-neutral-500 mb-8 px-4 font-medium">Hapus {deleteConfirm.name} ({deleteConfirm.selectedRam}/{deleteConfirm.selectedStorage})?</p>
                             <div className="flex gap-4">
-                                <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-4 font-bold bg-neutral-100 rounded-3xl">Batal</button>
+                                <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-4 font-bold bg-neutral-100 rounded-3xl text-black">Batal</button>
                                 <button onClick={confirmDelete} className="flex-1 py-4 font-bold bg-red-500 text-white rounded-3xl shadow-lg">Ya, Hapus</button>
                             </div>
                         </motion.div>

@@ -3,7 +3,8 @@ import React, { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ShoppingCart, Menu, X } from "lucide-react"; // Tambah Menu & X
+import { ShoppingCart, Menu, X,DoorOpenIcon } from "lucide-react"; // Tambah Menu & X
+import { INITIAL_CART } from "@/app/(main)/cart/page";
 
 const products = [
   { name: "Y05", image: "/test1.png", status: "baru" },
@@ -107,25 +108,25 @@ export const FloatingNav = ({ navItems, className }) => {
             exit={{ opacity: 0, x: -100 }}
             className="fixed inset-0 z-[100] bg-white dark:bg-black p-6 sm:hidden flex flex-col"
           >
-            <div className="flex justify-between items-center mb-8">
-              <span className="font-black text-xl tracking-tighter italic">GEMINI.</span>
+            <div className="flex justify-between items-center mb-8 ">
+              <span className="font-black text-4xl tracking-tighter italic ">VersePhone</span>
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-2"><X /></button>
             </div>
             <nav className="flex flex-col gap-6">
               {navItems?.map((item, idx) => (
-                <Link key={idx} href={item.link} onClick={() => setIsMobileMenuOpen(false)} className="text-3xl font-bold tracking-tighter">
+                <Link key={idx} href={item.link} onClick={() => setIsMobileMenuOpen(false)} className="text-3xl border-b-3 p-2 font-bold tracking-tighter border-black dark:border-white">
                   {item.name}
                 </Link>
               ))}
               <hr className="border-neutral-100 dark:border-white/10" />
-              <Link href="/login" className="text-2xl font-medium text-neutral-500">Login</Link>
+              <Link href="/login" className="text-3xl font-medium text-black dark:text-white border-2 border-neutral-800 dark:border-slate-200 shadow-xl flex justify-center p-3 rounded-md gap-3">Login <DoorOpenIcon></DoorOpenIcon></Link>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Floating pill nav */}
-      <div className={cn("flex max-w-[90%] sm:max-w-fit fixed top-5 inset-x-0 mx-auto z-[40] items-center justify-center", className)}>
+      <div className={cn("flex max-w-[90%] sm:max-w-fit fixed top-3 inset-x-0 mx-auto z-[40] items-center justify-center", className)}>
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -185,7 +186,7 @@ export const FloatingNav = ({ navItems, className }) => {
               >
                 <ShoppingCart className="w-[22px] h-[22px]" />
                 <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-extrabold text-white ring-2 ring-white">
-                  2
+                  {INITIAL_CART.length}
                 </span>
               </motion.button>
             </Link>

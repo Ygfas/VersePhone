@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { FloatingNav } from "@/components/ui/floating-navbar";
 import { IconHome, IconMessage, IconUser, IconBrandProducthunt } from "@tabler/icons-react";
+import { StickyBanner } from '../ui/sticky-banner';
 
 
 
@@ -53,8 +54,16 @@ export default function Navbar() {
 
     return (
         <div className="relative">
-            <div className="relative flex h-[10vh] flex-col overflow-y-auto ">
-
+           
+            <div className="relative flex lg:h-[9vh] h-[8vh]  flex-col overflow-y-auto ">
+                <StickyBanner className="bg-gradient-to-b from-red-400 to-red-600 z-[60]">
+                    <p className="mx-0 max-w-[90%] text-white drop-shadow-md ">
+                        Announcing $10M seed funding from project mayhem ventures.{" "}
+                        <a href="#" className="transition duration-200 hover:underline">
+                            Read announcement
+                        </a>
+                    </p>
+                </StickyBanner>
 
             </div>
 

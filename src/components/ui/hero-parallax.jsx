@@ -4,6 +4,8 @@ import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { InteractiveHoverButton } from "./interactive-hover-button";
+import { LineShadowText } from "./line-shadow-text";
+import { AuroraText } from "./aurora-text"
 
 export const HeroParallax = ({ products }) => {
   const firstRow = products.slice(0, 5);
@@ -61,10 +63,12 @@ export const HeroParallax = ({ products }) => {
 export const Header = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <h1 className="text-2xl md:text-7xl font-bold dark:text-white text-black">
-        The Ultimate <br /> development studio
+      <h1 className="text-2xl md:text-8xl font-bold dark:text-white text-black">
+        <AuroraText>Verse</AuroraText>
+        <LineShadowText >Phone</LineShadowText>
       </h1>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200 text-neutral-700">
+       
         We build beautiful products with the latest technologies and frameworks.
         We are a team of passionate developers and designers.
       </p>
