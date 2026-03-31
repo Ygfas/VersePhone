@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ShoppingCart, Menu, X,DoorOpenIcon } from "lucide-react"; // Tambah Menu & X
+import { ShoppingCart, Menu, X, DoorOpenIcon, ArrowRight } from "lucide-react"; // Tambah Menu & X
 import { INITIAL_CART } from "@/app/(main)/cart/page";
 
 const products = [
@@ -102,26 +102,110 @@ export const FloatingNav = ({ navItems, className }) => {
       {/* Mobile Menu Backdrop & Content */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            className="fixed inset-0 z-[100] bg-white dark:bg-black p-6 sm:hidden flex flex-col"
-          >
-            <div className="flex justify-between items-center mb-8 ">
-              <span className="font-black text-4xl tracking-tighter italic ">VersePhone</span>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2"><X /></button>
-            </div>
-            <nav className="flex flex-col gap-6">
-              {navItems?.map((item, idx) => (
-                <Link key={idx} href={item.link} onClick={() => setIsMobileMenuOpen(false)} className="text-3xl border-b-3 p-2 font-bold tracking-tighter border-black dark:border-white">
-                  {item.name}
-                </Link>
-              ))}
-              <hr className="border-neutral-100 dark:border-white/10" />
-              <Link href="/login" className="text-3xl font-medium text-black dark:text-white border-2 border-neutral-800 dark:border-slate-200 shadow-xl flex justify-center p-3 rounded-md gap-3">Login <DoorOpenIcon></DoorOpenIcon></Link>
-            </nav>
-          </motion.div>
+          <>
+            {/* 1. Backdrop dengan Blur Lembut */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-[90] bg-black/30 backdrop-blur-md sm:hidden"
+            />
+
+            {/* 2. Container Sidebar */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{
+                type: "spring",
+                damping: 25,    // Mengurangi goyangan berlebih
+                stiffness: 180, // Kecepatan tarikan
+                mass: 0.8
+              }}
+              className="fixed inset-y-0 left-0 z-[100] w-[85%] bg-white dark:bg-neutral-950 p-6 shadow-[20px_0_60px_-15px_rgba(0,0,0,0.3)] sm:hidden flex flex-col"
+            >
+              {/* Header Menu */}
+              <div className="flex justify-between items-center mb-10">
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="font-black text-4xl tracking-tighter italic"
+                >
+                  VersePhone
+                </motion.span>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  whileTap={{ scale: 0.8 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-full text-neutral-600 dark:text-white"
+                >
+                  <X size={24} />
+                </motion.button>
+              </div>
+
+              {/* Navigation Links dengan Stagger Effect */}
+              <nav className="flex flex-col gap-2">
+                {navItems?.map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                    transition={{
+                      delay: 0.1 + idx * 0.08, // Muncul satu per satu
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 12
+                    }}
+                  >
+                    <Link
+                      href={item.link}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="group relative flex items-center justify-between py-4"
+                    >
+                      <span className="text-4xl font-bold tracking-tighter text-neutral-800 dark:text-neutral-100 group-active:text-blue-600 transition-colors">
+                        {item.name}
+                      </span>
+
+                      {/* Dekorasi Garis bawah yang muncul saat di-tap/hover */}
+                      <motion.div
+                        className="absolute bottom-2 left-0 h-[3px] bg-blue-600"
+                        initial={{ width: 0 }}
+                        whileHover={{ width: "100%" }}
+                      />
+
+                      <ArrowRight className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-600" />
+                    </Link>
+                  </motion.div>
+                ))}
+
+                {/* Bagian Login yang menonjol */}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, type: "spring" }}
+                  className="mt-auto mb-6" // Mendorong login ke bawah sidebar
+                >
+                  <Link
+                    href="/login"
+                    className="group w-full py-5 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-black flex items-center justify-center gap-4 overflow-hidden relative active:scale-95 transition-transform shadow-xl"
+                  >
+                    <span className="font-bold text-xl relative z-10">Sign In</span>
+                    <DoorOpenIcon size={22} className="relative z-10" />
+
+                    {/* Efek kilauan pada tombol */}
+                    <motion.div
+                      className="absolute inset-0 bg-blue-500/20"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </Link>
+                </motion.div>
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

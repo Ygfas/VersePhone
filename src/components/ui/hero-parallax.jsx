@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, } from "lucide-react";
+
 import Link from "next/link";
 import { InteractiveHoverButton } from "./interactive-hover-button";
 import { LineShadowText } from "./line-shadow-text";
@@ -29,7 +30,7 @@ export const HeroParallax = ({ products }) => {
   return (
     <div
       ref={ref}
-      className="h-[200vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="lg:h-[200vh] h-[100vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -63,7 +64,7 @@ export const HeroParallax = ({ products }) => {
 export const Header = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <h1 className="text-2xl md:text-8xl font-bold dark:text-white text-black">
+      <h1 className="text-6xl md:text-8xl font-bold dark:text-white text-black">
         <AuroraText>Verse</AuroraText>
         <LineShadowText >Phone</LineShadowText>
       </h1>
@@ -73,9 +74,11 @@ export const Header = () => {
         We are a team of passionate developers and designers.
       </p>
       <div className="mt-10">
-        <InteractiveHoverButton asChild className="shadow-lg">
-          <Link href="/login">Belanja Sekarang</Link>
-        </InteractiveHoverButton>
+        <Link href="/login" passHref legacyBehavior>
+          <InteractiveHoverButton className="shadow-lg">
+            Belanja Sekarang
+          </InteractiveHoverButton>
+        </Link>
       </div>
     </div>
   );
@@ -91,7 +94,9 @@ export const ProductCard = ({ product, translate }) => {
         y: -20,
       }}
       key={product.title}
-      className="group/product h-96 w-[30rem] relative shrink-0"
+      // MENGUBAH UKURAN DI SINI: 
+      // w-72 h-48 (Mobile) | md:w-[30rem] md:h-96 (Desktop)
+      className="group/product h-48 w-72 md:h-96 md:w-[30rem] relative shrink-0"
     >
       <Link href={product.link} className="block group-hover/product:shadow-2xl">
         <img

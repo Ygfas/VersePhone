@@ -99,7 +99,7 @@ export default function CartComponent() {
             <div className="flex-1 overflow-y-auto pt-10 sm:pt-32 pb-48 custom-scrollbar">
                 <div className="w-full px-4 sm:px-10 lg:px-20">
                     <div className="flex justify-between items-center mb-6 sm:mb-10">
-                        <h1 className="text-3xl sm:text-5xl font-black tracking-tighter">Keranjang Anda</h1>
+                        <h1 className="text-2xl p-5 sm:text-5xl font-black tracking-tighter">Keranjang Anda</h1>
                         <button onClick={() => setCart([])} className="text-red-500 gap-2 flex justify-center font-bold text-md bg-red-50 hover:bg-red-100 px-5 py-2 rounded-full transition-all">
                             Bersihkan<Trash2 className='text-sm w-5 h-5'></Trash2>
                         </button>
