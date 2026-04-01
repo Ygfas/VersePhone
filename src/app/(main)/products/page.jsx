@@ -1,5 +1,5 @@
 'use client'
-import FloatingSearch from "@/components/ui/floating-search"
+// import FloatingSearch from "@/components/ui/floating-search"
 import FilterItems from "@/components/ui/filter-items"
 import { motion } from "framer-motion"
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -47,9 +47,9 @@ const transition = {
 export default function Products() {
     return (
         <div className="relative min-h-screen bg-[#F8FAFC]">
-            <FloatingSearch />
+            {/* <FloatingSearch /> */}
 
-            <div className="pt-10 pb-24 lg:px-20 bg-slate-100/50 dark:bg-neutral-900">
+            <div className=" pb-24 lg:px-20 bg-slate-100/50 dark:bg-neutral-900">
                 <FilterItems />
 
                
@@ -78,8 +78,8 @@ export default function Products() {
                                     </figure>
 
                                     <div className="p-8">
-                                        <h1 className="text-2xl font-bold text-slate-800 dark:text-white group-hover:text-blue-600 transition-colors">{item.title}</h1>
-                                        <h2 className="text-lg font-medium text-slate-500 dark:text-slate-400 mt-1">{item.subtitle}</h2>
+                                        <h1 className="text-xl lg:text-3xl font-bold text-slate-800 dark:text-white group-hover:text-blue-600 transition-colors">{item.title}</h1>
+                                        <h2 className="text-md lg:text-xl font-medium text-slate-500 dark:text-slate-400 mt-1">{item.subtitle}</h2>
                                     </div>
                                 </motion.div>
                             </DialogTrigger>

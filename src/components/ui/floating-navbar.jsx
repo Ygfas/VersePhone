@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ShoppingCart, Menu, X, DoorOpenIcon, ArrowRight } from "lucide-react"; // Tambah Menu & X
 import { INITIAL_CART } from "@/app/(main)/cart/page";
+import { NavSearch } from "./floating-search";
+import { AnimatedThemeToggler } from "./animated-theme-toggler";
 
 const products = [
   { name: "Y05", image: "/test1.png", status: "baru" },
@@ -144,6 +146,7 @@ export const FloatingNav = ({ navItems, className }) => {
                   <X size={24} />
                 </motion.button>
               </div>
+             
 
               {/* Navigation Links dengan Stagger Effect */}
               <nav className="flex flex-col gap-2">
@@ -178,7 +181,9 @@ export const FloatingNav = ({ navItems, className }) => {
                       <ArrowRight className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-600" />
                     </Link>
                   </motion.div>
+                  
                 ))}
+              
 
                 {/* Bagian Login yang menonjol */}
                 <motion.div
@@ -204,75 +209,67 @@ export const FloatingNav = ({ navItems, className }) => {
                   </Link>
                 </motion.div>
               </nav>
+            <AnimatedThemeToggler
+              className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-neutral-200 dark:border-white/[0.2] shadow-lg"
+            />
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
       {/* Floating pill nav */}
-      <div className={cn("flex max-w-[90%] sm:max-w-fit fixed top-3 inset-x-0 mx-auto z-[40] items-center justify-center", className)}>
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-between sm:justify-center w-full gap-2 rounded-full border border-white/10 bg-white/80 px-3 py-1.5 shadow-lg shadow-black/10 backdrop-blur-md dark:border-white/10 dark:bg-black/50"
-        >
-          {/* Hamburger (Mobile Only) - Diletakkan di Kiri */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="block sm:hidden p-2 text-neutral-600 dark:text-neutral-300"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+      <div className={cn("flex max-w-[95%] sm:max-w-fit fixed top-3 inset-x-0 mx-auto z-[40] items-center justify-center", className)}>
+        <motion.div className="flex items-center justify-between sm:justify-center w-full gap-2 rounded-full border border-white/10 bg-white/80 px-3 py-1.5 shadow-lg shadow-black/10 backdrop-blur-md dark:border-white/10 dark:bg-black/50">
 
-          {/* Nav Items (Desktop Only) */}
+          {/* GRUP KIRI (Mobile Search & Hamburger) */}
+          <div className="flex items-center gap-1 sm:hidden">
+            <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-neutral-600 dark:text-neutral-300">
+              <Menu className="w-6 h-6" />
+            </button>
+            <NavSearch />
+           
+          </div>
           <div className="hidden sm:flex items-center gap-1">
+            <NavSearch /> {/* SEARCH DI KIRI HOME (DESKTOP) */}
+
             {navItems?.map((navItem, idx) => {
               const isProduct = navItem.name.toLowerCase() === "products";
               return (
-                <div
-                  key={`link-${idx}`}
-                  className="relative"
-                  onMouseEnter={isProduct ? handleMouseEnter : undefined}
-                  onMouseLeave={isProduct ? handleMouseLeave : undefined}
-                >
-                  <Link
-                    href={navItem.link}
-                    className={cn(
-                      "relative flex items-center gap-1 rounded-full px-4 py-2 text-md font-medium transition-colors",
-                      isProduct && isProductOpen
-                        ? "bg-neutral-100 text-neutral-900 dark:bg-white/10 dark:text-white"
-                        : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-white/10 dark:hover:text-white"
-                    )}
-                  >
+                <div key={idx} className="relative" onMouseEnter={isProduct ? handleMouseEnter : undefined} onMouseLeave={isProduct ? handleMouseLeave : undefined}>
+                  <Link href={navItem.link} className={cn("px-4 py-2 text-md font-medium transition-colors rounded-full block", isProduct && isProductOpen ? "bg-neutral-100 dark:bg-white/10" : "hover:bg-neutral-100 dark:hover:bg-white/10")}>
                     {navItem.name}
                   </Link>
+                  
                 </div>
+                
               );
+              
             })}
+            <AnimatedThemeToggler
+              className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-neutral-200 dark:border-white/[0.2] shadow-lg"
+            />
           </div>
 
-          <div className="h-5 w-px bg-neutral-200 dark:bg-white/10 hidden sm:block" />
+          {/* NAV ITEMS (DESKTOP) */}
 
-          {/* Login & Cart Section */}
+          <div className="h-5 w-px bg-neutral-200 dark:bg-white/10 hidden sm:block mx-2" />
+          
+
+          {/* GRUP KANAN (Cart & Login) */}
           <div className="flex items-center gap-1">
             <Link href="/login" className="hidden sm:block">
-              <button className="relative rounded-full bg-neutral-900 px-4 py-2 text-md font-medium text-white transition-all hover:bg-neutral-800 dark:bg-white dark:text-black">
-                <span>Login</span>
+              <button className="rounded-full bg-neutral-900 px-4 py-2 text-md font-medium text-white dark:bg-white dark:text-black hover:opacity-80 transition">
+                Login
               </button>
             </Link>
 
             <Link href="/cart">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="relative p-3 text-neutral-600 hover:text-blue-600 dark:text-neutral-300 transition-colors"
-              >
-                <ShoppingCart className="w-[22px] h-[22px]" />
-                <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-extrabold text-white ring-2 ring-white">
-                  {INITIAL_CART.length}
+              <div className="relative p-3 text-neutral-600 dark:text-neutral-300">
+                <ShoppingCart size={22} />
+                <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white dark:ring-black">
+                  3
                 </span>
-              </motion.button>
+              </div>
             </Link>
           </div>
         </motion.div>

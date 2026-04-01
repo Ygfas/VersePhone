@@ -71,9 +71,7 @@ export default function Navbar() {
 
             <div className="fixed top-6 right-6 z-[55]">
 
-                <AnimatedThemeToggler
-                    className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-neutral-200 dark:border-white/[0.2] shadow-lg"
-                />
+               
             </div>
 
             <FloatingNav navItems={navItems} />
