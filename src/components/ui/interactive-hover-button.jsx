@@ -1,4 +1,4 @@
-import { ArrowRight, ShoppingCart } from "lucide-react";
+import { ArrowRight, ShoppingCart, ShoppingCartIcon } from "lucide-react";
 import { IconShoppingCartHeart } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,7 @@ export function InteractiveHoverButton({ children, className, ...props }) {
         <span className="translate-x-12 transition-all duration-300 group-hover:translate-x-0">
           {children}
         </span>
-        <ArrowRight className="translate-x-12 transition-all duration-300 group-hover:translate-x-0" />
+        <ShoppingCart className="translate-x-12 transition-all duration-300 group-hover:translate-x-0" />
       </div>
     </button>
   );

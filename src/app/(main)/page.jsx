@@ -23,7 +23,7 @@ export default function Home() {
       <div className="relative w-full">
        
       </div>
-          <div className="h-[2500px]">
+          <div className="h-[3000px]">
            
             <Hero />
             <Content />
