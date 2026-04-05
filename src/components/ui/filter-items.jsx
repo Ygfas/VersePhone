@@ -5,26 +5,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FilterBrandItems() {
     const categories = [
-        { id: "all", name: "Semua", logo: "https://www.svgrepo.com/show/502648/grid.svg" },
-        { id: "apple", name: "Apple", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
-        { id: "asus", name: "Asus", logo: "https://upload.wikimedia.org/wikipedia/commons/d/de/Asus_Logo.svg" },
-        { id: "honor", name: "Honor", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Honor_logo.svg" },
-        { id: "huawei", name: "Huawei", logo: "https://upload.wikimedia.org/wikipedia/commons/0/00/Huawei_Logo.svg" },
-        { id: "infinix", name: "Infinix", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Infinix_Logo.svg" },
-        { id: "oppo", name: "Oppo", logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Oppo_Logo.svg" },
-        { id: "realme", name: "Realme", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-logo.svg" },
-        { id: "honor", name: "Honor", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Honor_logo.svg" },
-        { id: "huawei", name: "Huawei", logo: "https://upload.wikimedia.org/wikipedia/commons/0/00/Huawei_Logo.svg" },
-        { id: "infinix", name: "Infinix", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Infinix_Logo.svg" },
-        { id: "oppo", name: "Oppo", logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Oppo_Logo.svg" },
-        { id: "realme", name: "Realme", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-logo.svg" },
-        { id: "huawei", name: "Huawei", logo: "https://upload.wikimedia.org/wikipedia/commons/0/00/Huawei_Logo.svg" },
-        { id: "infinix", name: "Infinix", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Infinix_Logo.svg" },
-        { id: "oppo", name: "Oppo", logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Oppo_Logo.svg" },
-        { id: "realme", name: "Realme", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-logo.svg" },
-        { id: "infinix", name: "Infinix", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Infinix_Logo.svg" },
-        { id: "oppo", name: "Oppo", logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Oppo_Logo.svg" },
-        { id: "realme", name: "Realme", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-logo.svg" },
+        { id: "samsung", name: "Samsung", logo: "/brand/samsung.jpg" },
+        { id: "apple", name: "Apple", logo: "/brand/iphone.jpg" },
+        { id: "xiaomi", name: "Xiaomi", logo: "/brand/xiaomi.jpg" },
+        { id: "poco", name: "Poco", logo: "/brand/poco.png" },
+        { id: "vivo", name: "Vivo", logo: "/brand/vivo.jpg" },
+        { id: "iqoo", name: "Iqoo", logo: "/brand/Iqoo.jpg" },
+        { id: "oppo", name: "Oppo", logo: "/brand/oppo.jpg" },
+        { id: "realme", name: "Realme", logo: "/brand/realme.jpg" },
+        { id: "huawei", name: "Huawei", logo: "/brand/Huawei.jpg" },
+        { id: "honor", name: "Honor", logo: "/brand/Honor.jpg" },
+        { id: "tecno", name: "Tecno", logo: "/brand/Tecno.jpg" },
+        { id: "infinix", name: "Infinix", logo: "/brand/Infinix.jpg" },
+        { id: "motorola", name: "Motorola", logo: "/brand/Motorola.jpg" },
+        { id: "pixel", name: "Pixel", logo: "/brand/googlepixel.jpg" },
+        { id: "redmagic", name: "Red magic", logo: "/brand/redmagic.jpg" },
+      
     ];
 
     const [active, setActive] = useState("all");
@@ -40,7 +36,7 @@ export default function FilterBrandItems() {
     };
 
     return (
-        <div className="w-full bg-orange-400 py-10 my-10 relative group overflow-hidden">
+        <div className="w-full bg-red-500 py-10 my-10 relative group overflow-hidden">
             {/* BAGIAN YANG DIUBAH: 
         1. Menambahkan 'max-w-[90%] md:max-w-7xl' agar tidak mentok ke pinggir layar.
         2. Menambahkan 'mx-auto' agar posisinya tetap di tengah.
@@ -53,7 +49,7 @@ export default function FilterBrandItems() {
                     /* Posisi panah disesuaikan (left-0) karena pembungkusnya sudah punya jarak */
                     className="absolute -left-10 top-[45%] -translate-y-1/2 z-30 bg-white hover:bg-gray-100 p-2 rounded-full shadow-2xl hidden md:flex transition-all hover:scale-110 active:scale-95 border border-slate-400"
                 >
-                    <ChevronLeft size={24} className="text-orange-500" />
+                    <ChevronLeft size={24} className="text-slate-500" />
                 </button>
 
                 {/* Container Utama */}
@@ -83,17 +79,17 @@ export default function FilterBrandItems() {
                             rounded-full transition-all duration-500
                             ${active === item.id
                                         ? "bg-white shadow-lg ring-4 ring-white/50"
-                                        : "bg-white/90 shadow-md hover:bg-white"
+                                        : "bg-white shadow-md hover:bg-white"
                                     }
                         `}
                             >
-                                <div className="w-1/2 h-1/2 flex items-center justify-center">
+                                <div className="w-28 h-28 flex items-center justify-center">
                                     <img
                                         src={item.logo}
                                         alt={item.name}
                                         className={`
                                     max-w-full max-h-full object-contain transition-all duration-500
-                                    ${active === item.id ? "grayscale-0 scale-110" : "grayscale opacity-60"}
+                                   
                                 `}
                                     />
                                 </div>
@@ -115,7 +111,7 @@ export default function FilterBrandItems() {
                     /* Posisi panah disesuaikan (right-0) */
                     className="absolute -right-10 top-[45%] -translate-y-1/2 z-30 bg-white hover:bg-gray-100 p-2 rounded-full shadow-2xl hidden md:flex transition-all hover:scale-110 active:scale-95 border border-slate-400"
                 >
-                    <ChevronRight size={24} className="text-orange-500" />
+                    <ChevronRight size={24} className="text-slate-500" />
                 </button>
 
             </div>

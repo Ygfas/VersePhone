@@ -4,26 +4,56 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Plus } from 'lucide-react';
 const tabs = [
     {
-        title: 'How do UI components improve UX?',
+        title: 'Mengapa website VersePhone sering mengalami loading lama saat diakses?',
         description:
-            'UI components can improve UX by providing familiar, consistent interactions that make it easy for users to navigate and interact with an application.',
-        imageUrl:
-            'https://images.unsplash.com/photo-1709949908058-a08659bfa922?q=80&w=1200&auto=format',
+            'Website VersePhone sering mengalami loading lama karena server overload, kurangnya optimasi sistem, dan ukuran konten seperti gambar yang terlalu besar.',
     },
     {
-        title: 'Common UI component design challenges?',
+        title: 'Apa penyebab pengguna gagal login ke akun mereka di VersePhone?',
         description:
-            'Some common challenges include maintaining consistency across different devices and screen sizes, ensuring compatibility with various browsers and assistive technologies, and balancing flexibility with ease of use.',
-        imageUrl:
-            'https://images.unsplash.com/photo-1548192746-dd526f154ed9?q=80&w=1200&auto=format',
+            'Pengguna gagal login ke akun mereka di VersePhone karena adanya bug pada sistem autentikasi, server yang tidak stabil, atau kesalahan dalam pengolahan data login.',
     },
     {
-        title: 'Ensuring UI component responsiveness?',
+        title: 'Mengapa proses checkout di VersePhone sering gagal dilakukan pengguna?',
         description:
-            '     Developers can ensure the responsiveness of UI components by using techniques such as fluid layouts, flexible grids, and media queries to adapt the components to different screen sizes and orientations.',
-        imageUrl:
-            'https://images.unsplash.com/photo-1693581176773-a5f2362209e6?q=80&w=1200&auto=format',
+            'Proses checkout di VersePhone sering gagal karena adanya masalah pada sistem pembayaran, integrasi payment gateway yang tidak stabil, atau error pada validasi data.',
     },
+    {
+        title: 'Mengapa informasi produk di VersePhone sering dianggap kurang lengkap?',
+        description:
+            'Informasi produk di VersePhone sering dianggap kurang lengkap karena deskripsi yang tidak detail, spesifikasi yang minim, dan gambar produk yang kurang jelas.',
+    },
+    {
+        title: 'Mengapa produk yang diterima pengguna tidak sesuai dengan yang ditampilkan di website VersePhone?',
+        description:
+            'Produk yang diterima pengguna tidak sesuai dengan yang ditampilkan di website VersePhone karena kesalahan input data, kurangnya validasi produk, atau perbedaan dari pihak supplier.',
+    },
+    {
+        title: 'Apa penyebab pengiriman produk dari VersePhone menjadi lambat?',
+        description:
+            'Pengiriman produk dari VersePhone menjadi lambat karena kendala pada logistik, stok barang yang tidak siap, atau sistem tracking yang tidak real-time.',
+    },
+    {
+        title: 'Mengapa pengguna merasa kesulitan dalam menggunakan website VersePhone?',
+        description:
+            'Pengguna merasa kesulitan dalam menggunakan website VersePhone karena tampilan yang tidak intuitif, menu yang kompleks, dan desain yang kurang responsif.',
+    },
+    {
+        title: 'Apakah data pengguna di website VersePhone aman?',
+        description:
+            'Data pengguna di website VersePhone aman jika sistem menggunakan enkripsi, protokol HTTPS, dan perlindungan keamanan yang memadai.',
+    },
+    {
+        title: 'Mengapa harga produk di VersePhone berubah saat proses checkout?',
+        description:
+            'Harga produk di VersePhone berubah saat proses checkout karena adanya bug sistem, promo yang tidak sinkron, atau keterlambatan pembaruan database.',
+    },
+    {
+        title: 'Mengapa customer service VersePhone sulit dihubungi atau lambat merespon?',
+        description:
+            'Customer service VersePhone sulit dihubungi atau lambat merespon karena keterbatasan tim support, tidak adanya sistem otomatis, atau manajemen layanan yang kurang optimal.',
+    },
+
 ];
 function SingleLayout() {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -39,7 +69,7 @@ function SingleLayout() {
                 <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4">
                     FAQ
                 </h1>
-                <div className="h-fit border  rounded-lg p-2 dark:bg-[#111111] bg-[#F2F2F2]">
+                <div className="h-fit border-2  rounded-lg p-2 dark:bg-[#111111] bg-[#F2F2F2]">
                     {tabs.map((tab, index) => (
                         <motion.div
                             key={tab.title}

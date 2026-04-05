@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import CardItems from "@/components/products/card-modal"
 
+
 const items = [
     {
         id: 1,
@@ -68,20 +69,27 @@ export default function Products() {
                                     className="break-inside-avoid bg-white dark:bg-neutral-900 border border-slate-200/60 dark:border-white/5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-[24px] overflow-hidden cursor-pointer"
                                 >
                                     <figure className="relative w-full h-auto bg-slate-50 dark:bg-neutral-800/50 flex justify-center p-8 overflow-hidden">
+                                    
                                         <motion.img
                                             whileHover={{ scale: 1.1 }}
                                             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                             src={item.image}
                                             alt={item.title}
                                             className="rounded-lg object-contain lg:max-h-[280px] max-h-40 drop-shadow-xl"
+                                            
                                         />
+                                        
                                     </figure>
+                                    
 
                                     <div className="p-8">
                                         <h1 className="text-xl lg:text-3xl font-bold text-slate-800 dark:text-white group-hover:text-blue-600 transition-colors">{item.title}</h1>
                                         <h2 className="text-md lg:text-xl font-medium text-slate-500 dark:text-slate-400 mt-1">{item.subtitle}</h2>
+                                        
                                     </div>
+                                    
                                 </motion.div>
+                                
                             </DialogTrigger>
 
                             <CardItems item={item} />

@@ -232,7 +232,7 @@ export default function CartComponent() {
             </div>
 
             {/* Footer Summary */}
-            <div className="fixed bottom-0 border-t-2 left-0 right-0 bg-white dark:bg-neutral-900/80 backdrop-blur-xl border-neutral-200 dark:border-neutral-800 p-6 sm:p-4 z-50">
+            <div className="fixed bottom-0 z-1000 border-t-2 left-0 right-0 bg-white dark:bg-neutral-900/80 backdrop-blur-xl border-neutral-200 dark:border-neutral-800 p-6 sm:p-4 z-50">
                 <div className="px-6 sm:px-10 flex items-center justify-between gap-10">
                     <div className="hidden sm:block">
                         <p className="text-neutral-500 font-bold uppercase tracking-[0.2em] text-xs mb-1">Total Pembayaran</p>
