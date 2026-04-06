@@ -83,7 +83,7 @@ export default function FilterBrandItems() {
                                     }
                         `}
                             >
-                                <div className="w-28 h-28 flex items-center justify-center">
+                                <div className="md:w-28 md:h-28 h-16 w-16 flex items-center justify-center">
                                     <img
                                         src={item.logo}
                                         alt={item.name}

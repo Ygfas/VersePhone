@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, ShoppingBag, Trash2, ChevronDown } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 // --- DATA AWAL (Disimpan di luar komponen agar rapi) ---
 export const INITIAL_CART = [
@@ -91,7 +92,7 @@ export default function CartComponent() {
         setDeleteConfirm(null);
     };
 
-    // Ini adalah const biasa karena nilainya "diturunkan" dari state cart
+
     const totalHarga = cart.filter(i => i.checked).reduce((acc, i) => acc + (i.price * i.qty), 0);
 
     return (
@@ -248,13 +249,14 @@ export default function CartComponent() {
                             <span className="font-bold text-neutral-500 uppercase text-xs tracking-widest">Total</span>
                             <span className="font-black text-2xl text-blue-600">Rp {totalHarga.toLocaleString('id-ID')}</span>
                         </div>
-
+                        <Link href={'/payment'}>
                         <button className="w-full sm:w-[400px] py-5 sm:py-8 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-[28px] sm:rounded-[40px] font-black text-xl sm:text-3xl shadow-2xl shadow-blue-500/10 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group">
                             <span>Checkout Sekarang</span>
                             <div className="hidden sm:flex w-10 h-10 bg-blue-600 rounded-full items-center justify-center group-hover:translate-x-1 transition-transform">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
                             </div>
                         </button>
+                        </Link>
                     </div>
                 </div>
             </div>
