@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-// ─── Dummy Products (Acme Store) ───────────────────────────────────────────
+// ─── Dummy Products (VersePhone Store) ──────────────────────────────────────
 const CART = [
     { id: 1, name: "Acme Cup", variant: "Black", price: 15.0, qty: 2, emoji: "☕" },
     { id: 2, name: "Acme Hoodie", variant: "Natural", price: 50.0, qty: 1, emoji: "👕" },
@@ -13,7 +13,7 @@ const SHIPPING_OPTIONS = [
     { id: "overnight", label: "Overnight Shipping", desc: "Next business day", price: 25 },
 ];
 
-const STEPS = ["Information", "Shipping", "Payment"];
+const STEPS = ["Informasi", "Pengiriman", "Pembayaran"];
 
 // ─── Shared UI ─────────────────────────────────────────────────────────────
 function StepBar({ current }) {
@@ -93,7 +93,6 @@ function StepInformation({ data, onChange, onNext }) {
         if (!data.address) e.address = "Enter an address";
         if (!data.city) e.city = "Enter a city";
         if (!data.state) e.state = "Select a state / province";
-        if (!data.zip) e.zip = "Enter a ZIP / postal code";
         setErrors(e);
         if (!Object.keys(e).length) onNext();
     };
@@ -101,61 +100,52 @@ function StepInformation({ data, onChange, onNext }) {
     return (
         <div>
             <section className="mb-8">
-                <h2 className="text-[15px] font-semibold mb-4">Contact</h2>
-                <TInput type="text" placeholder="Email or mobile phone number" value={data.contact} onChange={f("contact")} error={errors.contact} />
+                <h2 className="text-[15px] font-semibold mb-4">Kontak</h2>
+                <TInput type="text" placeholder="Email atau nomor ponsel" value={data.contact} onChange={f("contact")} error={errors.contact} />
                 <ErrMsg msg={errors.contact} />
-                <div className="mt-3">
-                    <Checkbox checked={data.newsletter} onChange={() => onChange("newsletter", !data.newsletter)}>
-                        Email me with news and offers
-                    </Checkbox>
-                </div>
             </section>
 
             <section className="mb-8">
-                <h2 className="text-[15px] font-semibold mb-4">Shipping address</h2>
+                <h2 className="text-[15px] font-semibold mb-4">Alamat pengiriman</h2>
                 <div className="space-y-3">
                     <TSelect value={data.country} onChange={f("country")}>
-                        {["Indonesia", "United States", "Canada", "United Kingdom", "Australia", "Germany", "Japan", "Singapore"].map(c => <option key={c}>{c}</option>)}
+                        {["Indonesia"].map(c => <option key={c}>{c}</option>)}
                     </TSelect>
                     <div className="grid grid-cols-2 gap-3">
-                        <TInput type="text" placeholder="First name (optional)" value={data.firstName} onChange={f("firstName")} />
+                        <TInput type="text" placeholder="Nama depan" value={data.firstName} onChange={f("firstName")} />
                         <div>
-                            <TInput type="text" placeholder="Last name" value={data.lastName} onChange={f("lastName")} error={errors.lastName} />
+                            <TInput type="text" placeholder="Nama belakang" value={data.lastName} onChange={f("lastName")} error={errors.lastName} />
                             <ErrMsg msg={errors.lastName} />
                         </div>
                     </div>
                     <div>
-                        <TInput type="text" placeholder="Address" value={data.address} onChange={f("address")} error={errors.address}
+                        <TInput type="text" placeholder="Alamat" value={data.address} onChange={f("address")} error={errors.address}
                             icon={<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4" stroke="currentColor" strokeWidth="1.4" /><path d="M9.5 9.5L12 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>}
                         />
                         <ErrMsg msg={errors.address} />
                     </div>
-                    <TInput type="text" placeholder="Apartment, suite, etc. (optional)" value={data.apartment} onChange={f("apartment")} />
-                    <div className="grid grid-cols-3 gap-3">
+                    <TInput type="text" placeholder="Gedung, Penginapan, dll. (opsional)" value={data.apartment} onChange={f("apartment")} />
+                    <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <TInput type="text" placeholder="City" value={data.city} onChange={f("city")} error={errors.city} />
+                            <TInput type="text" placeholder="Kota" value={data.city} onChange={f("city")} error={errors.city} />
                             <ErrMsg msg={errors.city} />
                         </div>
                         <div>
                             <TSelect value={data.state} onChange={f("state")} error={errors.state}>
-                                <option value="">State</option>
-                                {["DKI Jakarta", "Jawa Barat", "Jawa Timur", "Bali", "California", "New York", "Texas"].map(s => <option key={s}>{s}</option>)}
+                                <option value="">Provinsi</option>
+                                {["DKI Jakarta", "Jawa Barat", "Jawa Timur", "Jawa Tengah", "Yogyakarta", "Banten"].map(s => <option key={s}>{s}</option>)}
                             </TSelect>
                             <ErrMsg msg={errors.state} />
                         </div>
-                        <div>
-                            <TInput type="text" placeholder="ZIP code" value={data.zip} onChange={f("zip")} error={errors.zip} />
-                            <ErrMsg msg={errors.zip} />
-                        </div>
                     </div>
                     <Checkbox checked={data.saveInfo} onChange={() => onChange("saveInfo", !data.saveInfo)}>
-                        Save this information for next time
+                        Simpan informasi ini untuk lain kali.
                     </Checkbox>
                 </div>
             </section>
 
             <button onClick={submit} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-white text-sm font-semibold rounded-xl transition-all">
-                Continue to shipping →
+                Lanjut untuk Pengiriman →
             </button>
         </div>
     );
@@ -166,12 +156,12 @@ function StepShipping({ data, shippingId, onSelect, onBack, onNext }) {
     return (
         <div>
             <div className="mb-8 rounded-xl border border-zinc-800 divide-y divide-zinc-800 overflow-hidden">
-                <SummaryRow label="Contact" value={data.contact} onEdit={onBack} />
-                <SummaryRow label="Ship to" value={[data.address, data.city, data.state, data.zip, data.country].filter(Boolean).join(", ")} onEdit={onBack} />
+                <SummaryRow label="Kontak" value={data.contact} onEdit={onBack} />
+                <SummaryRow label="Kirim ke" value={[data.address, data.city, data.state, data.country].filter(Boolean).join(", ")} onEdit={onBack} />
             </div>
 
             <section className="mb-8">
-                <h2 className="text-[15px] font-semibold mb-4">Shipping method</h2>
+                <h2 className="text-[15px] font-semibold mb-4">Metode pengiriman</h2>
                 <div className="space-y-2.5">
                     {SHIPPING_OPTIONS.map(opt => (
                         <label key={opt.id}
@@ -191,9 +181,9 @@ function StepShipping({ data, shippingId, onSelect, onBack, onNext }) {
             </section>
 
             <div className="flex gap-3 items-center">
-                <button onClick={onBack} className="px-4 py-3.5 text-zinc-400 hover:text-white text-sm transition-colors">← Return</button>
+                <button onClick={onBack} className="px-4 py-3.5 text-zinc-400 hover:text-white text-sm transition-colors">← Kembali</button>
                 <button onClick={onNext} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-white text-sm font-semibold rounded-xl transition-all">
-                    Continue to payment →
+                    Lanjut untuk Pembayaran →
                 </button>
             </div>
         </div>
@@ -233,16 +223,15 @@ function StepPayment({ info, shippingId, onBack, onComplete }) {
     return (
         <div>
             <div className="mb-8 rounded-xl border border-zinc-800 divide-y divide-zinc-800 overflow-hidden">
-                <SummaryRow label="Contact" value={info.contact} onEdit={() => onBack(0)} />
-                <SummaryRow label="Ship to" value={[info.address, info.city, info.state].filter(Boolean).join(", ")} onEdit={() => onBack(1)} />
-                <SummaryRow label="Method" value={`${shippingOpt.label} · ${shippingOpt.price === 0 ? "Free" : "$" + shippingOpt.price}`} onEdit={() => onBack(1)} />
+                <SummaryRow label="Kontak" value={info.contact} onEdit={() => onBack(0)} />
+                <SummaryRow label="Kirim ke" value={[info.address, info.city, info.state].filter(Boolean).join(", ")} onEdit={() => onBack(1)} />
+                <SummaryRow label="Metode" value={`${shippingOpt.label} · ${shippingOpt.price === 0 ? "Free" : "$" + shippingOpt.price}`} onEdit={() => onBack(1)} />
             </div>
 
             <section className="mb-6">
-                <h2 className="text-[15px] font-semibold mb-1.5">Payment</h2>
-                <p className="text-xs text-zinc-600 mb-4">All transactions are secure and encrypted.</p>
+                <h2 className="text-[15px] font-semibold mb-1.5">Pembayarn</h2>
+                <p className="text-xs text-zinc-600 mb-4">Semau pembayaran terlindungi dan terenkripsi.</p>
 
-                {/* Method Tabs */}
                 <div className="flex gap-2 mb-4 flex-wrap">
                     {[["card", "💳 Credit card"], ["paypal", "🅿 PayPal"], ["qris", "📱 QRIS"]].map(([id, label]) => (
                         <button key={id} onClick={() => setMethod(id)}
@@ -304,7 +293,6 @@ function StepPayment({ info, shippingId, onBack, onComplete }) {
                 </div>
             </section>
 
-            {/* Billing */}
             {method === "card" && (
                 <section className="mb-8">
                     <h2 className="text-[15px] font-semibold mb-3">Billing address</h2>
@@ -327,12 +315,12 @@ function StepPayment({ info, shippingId, onBack, onComplete }) {
             )}
 
             <div className="flex gap-3 items-center">
-                <button onClick={() => onBack(1)} className="px-4 py-3.5 text-zinc-400 hover:text-white text-sm transition-colors">← Return</button>
+                <button onClick={() => onBack(1)} className="px-4 py-3.5 text-zinc-400 hover:text-white text-sm transition-colors">← Kembali</button>
                 <button onClick={submit} disabled={processing}
                     className="flex-1 sm:flex-none sm:px-10 py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 active:scale-[0.98] text-white text-sm font-semibold rounded-xl transition-all flex items-center justify-center gap-2">
                     {processing
                         ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeOpacity="0.3" /><path d="M12 2a10 10 0 0 1 10 10" stroke="white" strokeWidth="3" strokeLinecap="round" /></svg> Processing…</>
-                        : <>🔒 Pay now · ${total.toFixed(2)}</>
+                        : <>🔒 Bayar Sekarang · ${total.toFixed(2)}</>
                     }
                 </button>
             </div>
@@ -342,13 +330,10 @@ function StepPayment({ info, shippingId, onBack, onComplete }) {
 
 // ─── Order Summary Sidebar ─────────────────────────────────────────────────
 function OrderSummary({ shippingId }) {
-    const [code, setCode] = useState("");
-    const [applied, setApplied] = useState(false);
     const shippingOpt = SHIPPING_OPTIONS.find(s => s.id === shippingId);
     const subtotal = CART.reduce((s, p) => s + p.price * p.qty, 0);
-    const discountAmt = applied ? subtotal * 0.1 : 0;
     const shippingCost = shippingOpt ? shippingOpt.price : 0;
-    const total = subtotal - discountAmt + shippingCost;
+    const total = subtotal + shippingCost;
 
     return (
         <div className="sticky top-10 space-y-5">
@@ -370,20 +355,8 @@ function OrderSummary({ shippingId }) {
 
             <div className="border-t border-zinc-900" />
 
-            <div className="flex gap-2">
-                <input type="text" placeholder='Discount code (try "ACME10")' value={code} onChange={e => setCode(e.target.value)}
-                    className="flex-1 bg-transparent border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-zinc-700 focus:border-zinc-700 outline-none transition-colors" />
-                <button onClick={() => { if (code.toLowerCase() === "acme10") setApplied(true); }}
-                    className={`px-4 py-2.5 text-sm font-medium rounded-xl transition-colors ${applied ? "bg-emerald-900/60 text-emerald-400 border border-emerald-800" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"}`}>
-                    {applied ? "✓" : "Apply"}
-                </button>
-            </div>
-
-            <div className="border-t border-zinc-900" />
-
             <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-zinc-400"><span>Subtotal</span><span className="text-white">${subtotal.toFixed(2)}</span></div>
-                {applied && <div className="flex justify-between text-emerald-400"><span>Discount (10%)</span><span>−${discountAmt.toFixed(2)}</span></div>}
                 <div className="flex justify-between text-zinc-400">
                     <span>Shipping</span>
                     <span>{shippingOpt ? (shippingOpt.price === 0 ? <span className="text-emerald-400">Free</span> : `$${shippingOpt.price.toFixed(2)}`) : <span className="text-zinc-600 text-xs">Calculated at next step</span>}</span>
@@ -395,12 +368,6 @@ function OrderSummary({ shippingId }) {
             <div className="flex justify-between items-baseline">
                 <span className="text-sm font-semibold text-white">Total</span>
                 <div><span className="text-xs text-zinc-600 mr-1">USD</span><span className="text-2xl font-bold text-white">${total.toFixed(2)}</span></div>
-            </div>
-
-            <div className="flex justify-center gap-6 pt-1">
-                {[["🔒", "Secure"], ["💳", "All Cards"], ["🚚", "Fast Ship"]].map(([ic, lb]) => (
-                    <div key={lb} className="flex items-center gap-1 text-zinc-700 text-[10px]"><span>{ic}</span><span>{lb}</span></div>
-                ))}
             </div>
         </div>
     );
@@ -436,7 +403,7 @@ function SuccessScreen({ info, onReset }) {
                     </div>
                 </div>
                 <button onClick={onReset} className="px-8 py-3 bg-white text-black text-sm font-semibold rounded-xl hover:bg-zinc-200 transition-colors">
-                    Continue Shopping
+                    Lanjut Belanja
                 </button>
             </div>
         </div>
@@ -459,7 +426,7 @@ export default function CheckoutPage() {
     if (done) return <SuccessScreen info={info} onReset={() => { setDone(false); setStep(0); }} />;
 
     return (
-        <div className="min-h-screen bg-[#0b0b0b] text-white">
+        <div className="min-h-screen bg-[#0b0b0b] text-white ">
             <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Syne:wght@600;700;800&display=swap');
         *, body { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
@@ -471,15 +438,13 @@ export default function CheckoutPage() {
 
             <div className="max-w-[1080px] mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-[1fr_360px] min-h-screen">
 
-                {/* LEFT: Multi-step form */}
-                <div className="py-10 lg:pr-12 lg:border-r border-zinc-900">
-                    {/* Logo */}
+                <div className="py-10 pt-30 lg:pr-12 lg:border-r border-zinc-900">
                     <div className="mb-10">
                         <span className="syne text-xl font-bold tracking-tight flex items-center gap-2">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M12 1L23 21H1L12 1Z" fill="white" fillOpacity="0.95" />
                             </svg>
-                            Acme Store
+                            VersePhone
                         </span>
                     </div>
 
@@ -496,14 +461,12 @@ export default function CheckoutPage() {
                         <StepPayment info={info} shippingId={shippingId}
                             onBack={(s) => setStep(s ?? 1)} onComplete={() => setDone(true)} />
                     )}
-
-                    <p className="text-zinc-800 text-xs mt-10 pt-8 border-t border-zinc-900">
-                        All rights reserved Acme Store © 2026
-                    </p>
                 </div>
 
-                {/* RIGHT: Summary */}
-                <div className="hidden lg:block py-10 pl-10 border-l border-zinc-900">
+                <div className="hidden lg:block py-10 pt-62 pl-10">
+                    <h1 className="text-2xl mb-10 ">
+                        Total Pembayaran
+                    </h1>
                     <OrderSummary shippingId={shippingId} />
                 </div>
             </div>

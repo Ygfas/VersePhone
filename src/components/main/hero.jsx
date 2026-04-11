@@ -4,22 +4,22 @@ import { HeroParallax } from "@/components/ui/hero-parallax"
 export default function Hero() {
     const products = [
         {
-            title: "Moonbeam",
-            link: "https://gomoonbeam.com",
+            title: "Apple",
+            link: "https://www.apple.com/",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/moonbeam.png",
+                "https://image.thum.io/get/https://www.apple.com",
         },
         {
-            title: "Cursor",
-            link: "https://cursor.so",
+            title: "Xiaomi",
+            link: "https://Xiaomi.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/cursor.png",
+                "https://image.thum.io/get/https://www.mi.com",
         },
         {
             title: "Vivo",
-            link: "https://vivi.com",
+            link: "https://vivo.com",
             thumbnail:
-                "hero/vivo.png",
+                "/hero/vivo.png",
         },
 
         {
@@ -29,73 +29,68 @@ export default function Hero() {
                 "/hero/samsung.png",
         },
         {
-            title: "Editrix AI",
-            link: "https://editrix.ai",
+            title: "Poco",
+            link: "https://poco.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/editrix.png",
+                "https://image.thum.io/get/https://www.poco.net",
         },
         {
-            title: "Pixel Perfect",
-            link: "https://app.pixelperfect.quest",
+            title: "Iqoo",
+            link: "https://iqoo.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/pixelperfect.png",
+                "https://image.thum.io/get/https://www.iqoo.com",
         },
 
         {
-            title: "Algochurn",
-            link: "https://algochurn.com",
+            title: "Tecno",
+            link: "https://tecno.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/algochurn.png",
+                "https://image.thum.io/get/https://www.tecno-mobile.com",
         },
         {
-            title: "Aceternity UI",
-            link: "https://ui.aceternity.com",
+            title: "Infinix",
+            link: "https://infinix.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/aceternityui.png",
+                "https://image.thum.io/get/https://www.infinixmobility.com",
         },
         {
-            title: "Tailwind Master Kit",
-            link: "https://tailwindmasterkit.com",
+            title: "Realme",
+            link: "https://realme.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/tailwindmasterkit.png",
+                "https://image.thum.io/get/https://www.realme.com",
         },
         {
-            title: "SmartBridge",
-            link: "https://smartbridgetech.com",
+            title: "Huawei",
+            link: "https://huawei.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/smartbridge.png",
+                "https://image.thum.io/get/https://www.huawei.com",
         },
         {
-            title: "Renderwork Studio",
-            link: "https://renderwork.studio",
+            title: "Honor",
+            link: "https://honor.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/renderwork.png",
+                "https://image.thum.io/get/https://www.honor.com",
         },
 
         {
-            title: "Creme Digital",
-            link: "https://cremedigital.com",
+            title: "Motorola",
+            link: "https://motorola.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/cremedigital.png",
+                "https://image.thum.io/get/https://www.motorola.com",
         },
         {
-            title: "Golden Bells Academy",
-            link: "https://goldenbellsacademy.com",
+            title: "Red Magic",
+            link: "https://redmagic.gg",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/goldenbellsacademy.png",
+                "https://image.thum.io/get/https://www.redmagic.gg",
         },
         {
-            title: "Invoker Labs",
-            link: "https://invoker.lol",
+            title: "Google Pixel",
+            link: "https://store.google.com",
             thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/invoker.png",
+                "https://image.thum.io/get/https://store.google.com/category/phones",
         },
-        {
-            title: "E Free Invoice",
-            link: "https://efreeinvoice.com",
-            thumbnail:
-                "https://www.aceternity.com/images/products/thumbnails/new/efreeinvoice.png",
-        },
+    
     ];
 return(
     <>
