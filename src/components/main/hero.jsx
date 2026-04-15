@@ -19,12 +19,12 @@ export default function Hero() {
             title: "Vivo",
             link: "https://vivo.com",
             thumbnail:
-                "/hero/vivo.png",
+                "https://image.thum.io/get/https://www.vivo.com",
         },
 
         {
             title: "Samsung",
-            link: "https://www.samsung.com",
+            link: "https://image.thum.io/get/https://www.samsung.com",
             thumbnail:
                 "/hero/samsung.png",
         },

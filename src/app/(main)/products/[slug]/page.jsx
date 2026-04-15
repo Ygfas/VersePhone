@@ -16,11 +16,32 @@ export default function ProductDetail() {
     // State untuk pilihan varian (Warna & RAM/ROM)
     const [selectedColor, setSelectedColor] = useState(product?.colors[0] || "")
     const [selectedStorage, setSelectedStorage] = useState(product?.storage[0] || "")
+
     const itemVariants = {
         initial: { opacity: 0, y: 15 },
         animate: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 30 } },
     };
 
+    /**
+     * Fitur Share: Mengambil link aktif dari browser (Chrome/Safari/dsb)
+     */
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: product?.title || "VersePhone",
+                    text: `Cek ${product?.title} ini di VersePhone!`,
+                    url: window.location.href, // Mengambil link aktif di browser
+                });
+            } catch (error) {
+                console.log("Error sharing:", error);
+            }
+        } else {
+            // Fallback jika browser tidak mendukung Web Share API
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link produk telah disalin ke clipboard!");
+        }
+    };
 
     if (!product) {
         return (
@@ -33,7 +54,7 @@ export default function ProductDetail() {
 
     return (
         <div className="min-h-screen bg-white dark:bg-neutral-900 pb-20">
-            {/* 1. Sticky Mini Header (Ala Erafone) */}
+            {/* 1. Sticky Mini Header */}
             <div className="sticky md:top-0 h-30 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-b border-slate-100 dark:border-white/5 py-4 z-[30]">
                 <div className="max-w-7xl mt-5 mx-auto px-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
@@ -42,19 +63,13 @@ export default function ProductDetail() {
                         </button>
                         <h2 className="hidden md:block font-bold text-slate-800 dark:text-white truncate max-w-[300px]">{product.title}</h2>
                     </div>
-                    {/* <div className="flex items-center gap-4">
-                        <span className="hidden lg:block font-bold text-blue-600">{formatPrice(product.price)}</span>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
-                            Beli Sekarang
-                        </button>
-                    </div> */}
                 </div>
             </div>
 
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
-                    {/* --- SISI KIRI: GALLERY (Sticky) --- */}
+                    {/* --- SISI KIRI: GALLERY --- */}
                     <div className="lg:col-span-7">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -118,8 +133,8 @@ export default function ProductDetail() {
                                         key={color}
                                         onClick={() => setSelectedColor(color)}
                                         className={`px-5 py-2.5 rounded-xl border-2 font-bold text-sm transition-all ${selectedColor === color
-                                                ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
-                                                : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
+                                            ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
+                                            : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
                                             }`}
                                     >
                                         {color}
@@ -137,8 +152,8 @@ export default function ProductDetail() {
                                         key={size}
                                         onClick={() => setSelectedStorage(size)}
                                         className={`py-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedStorage === size
-                                                ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
-                                                : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
+                                            ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
+                                            : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
                                             }`}
                                     >
                                         {size}
@@ -154,12 +169,6 @@ export default function ProductDetail() {
 
                         {/* BUTTONS */}
                         <div className="flex flex-col gap-4 pt-4">
-                            {/* <motion.button
-                                whileTap={{ scale: 0.97 }}
-                                className="w-full bg-blue-600 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-600/30 hover:bg-blue-700 transition-all"
-                            >
-                                TAMBAH KE KERANJANG
-                            </motion.button> */}
                             <motion.div variants={itemVariants} className="mt-8 flex justify-center" >
                                 <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-l-2xl bg-orange-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Tambah Pesanan</motion.button>
                                 <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-r-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Beli Sekarang</motion.button>
@@ -169,7 +178,12 @@ export default function ProductDetail() {
                                     <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                                     Wishlist
                                 </button>
-                                <button className="py-4 border border-slate-200 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white">
+
+                                {/* Tombol Share yang sudah dihubungkan ke fitur share */}
+                                <button
+                                    onClick={handleShare}
+                                    className="py-4 border border-slate-200 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white hover:bg-slate-50 dark:hover:bg-neutral-800 transition-colors"
+                                >
                                     <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
                                     Share
                                 </button>
@@ -178,7 +192,7 @@ export default function ProductDetail() {
                     </div>
                 </div>
 
-                {/* --- BAGIAN BAWAH: SPESIFIKASI (Konsep Erafone) --- */}
+                {/* --- BAGIAN BAWAH: SPESIFIKASI --- */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}

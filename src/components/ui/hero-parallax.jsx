@@ -30,7 +30,7 @@ export const HeroParallax = ({ products }) => {
   return (
     <div
       ref={ref}
-      className="lg:h-[200vh] h-[150vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="lg:h-[210vh] h-[150vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -96,7 +96,7 @@ export const ProductCard = ({ product, translate }) => {
       key={product.title}
       // MENGUBAH UKURAN DI SINI: 
       // w-72 h-48 (Mobile) | md:w-[30rem] md:h-96 (Desktop)
-      className="group/product h-42 w-76 md:h-96 md:w-[30rem] relative shrink-0"
+      className="group/product h-42 w-76 md:h-90 md:w-[30rem] relative shrink-0"
     >
       <Link href={product.link} className="block group-hover/product:shadow-2xl">
         <img

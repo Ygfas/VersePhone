@@ -78,12 +78,12 @@ export default function FilterBrandItems() {
                             aspect-square w-full max-w-[80px] md:max-w-[120px]
                             rounded-full transition-all duration-500
                             ${active === item.id
-                                        ? "bg-white shadow-lg ring-4 ring-white/50"
+                                        ? "bg-white shadow-lg ring-4 ring-white/50 "
                                         : "bg-white shadow-md hover:bg-white"
                                     }
                         `}
                             >
-                                <div className="md:w-28 md:h-28 h-16 w-16 flex items-center justify-center">
+                                <div className="md:w-28 md:h-28 h-14 w-14 flex items-center justify-center">
                                     <img
                                         src={item.logo}
                                         alt={item.name}
@@ -96,7 +96,7 @@ export default function FilterBrandItems() {
                             </motion.div>
 
                             <span className={`
-                        text-[9px] md:text-xs font-black uppercase tracking-widest transition-all
+                        text-[9px] md:text-lg font-black uppercase tracking-widest transition-all
                         ${active === item.id ? "text-white" : "text-white/70"}
                     `}>
                                 {item.name}
