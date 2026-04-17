@@ -13,13 +13,13 @@ export default function FilterBrandItems() {
         { id: "iqoo", name: "Iqoo", logo: "/brand/Iqoo.jpg" },
         { id: "oppo", name: "Oppo", logo: "/brand/oppo.jpg" },
         { id: "realme", name: "Realme", logo: "/brand/realme.jpg" },
-        { id: "huawei", name: "Huawei", logo: "/brand/Huawei.jpg" },
-        { id: "honor", name: "Honor", logo: "/brand/Honor.jpg" },
+        // { id: "huawei", name: "Huawei", logo: "/brand/Huawei.jpg" },
+        // { id: "honor", name: "Honor", logo: "/brand/Honor.jpg" },
         { id: "tecno", name: "Tecno", logo: "/brand/Tecno.jpg" },
         { id: "infinix", name: "Infinix", logo: "/brand/Infinix.jpg" },
-        { id: "motorola", name: "Motorola", logo: "/brand/Motorola.jpg" },
-        { id: "pixel", name: "Pixel", logo: "/brand/googlepixel.jpg" },
-        { id: "redmagic", name: "Red magic", logo: "/brand/redmagic.jpg" },
+        // { id: "motorola", name: "Motorola", logo: "/brand/Motorola.jpg" },
+        // { id: "pixel", name: "Pixel", logo: "/brand/googlepixel.jpg" },
+        // { id: "redmagic", name: "Red magic", logo: "/brand/redmagic.jpg" },
       
     ];
 

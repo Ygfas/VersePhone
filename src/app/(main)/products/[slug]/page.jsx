@@ -26,20 +26,30 @@ export default function ProductDetail() {
      * Fitur Share: Mengambil link aktif dari browser (Chrome/Safari/dsb)
      */
     const handleShare = async () => {
-        if (navigator.share) {
+        const shareData = {
+            title: product?.title || "VersePhone",
+            text: `Cek ${product?.title} ini di VersePhone!`,
+            url: window.location.href,
+        };
+
+        // Cek apakah browser mendukung Web Share API (Mobile Chrome/Safari sangat mendukung ini)
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
             try {
-                await navigator.share({
-                    title: product?.title || "VersePhone",
-                    text: `Cek ${product?.title} ini di VersePhone!`,
-                    url: window.location.href, // Mengambil link aktif di browser
-                });
+                await navigator.share(shareData);
             } catch (error) {
-                console.log("Error sharing:", error);
+                // Jika user membatalkan share, kita tidak perlu menampilkan error/alert
+                if (error.name !== 'AbortError') {
+                    console.error("Error sharing:", error);
+                }
             }
         } else {
-            // Fallback jika browser tidak mendukung Web Share API
-            navigator.clipboard.writeText(window.location.href);
-            alert("Link produk telah disalin ke clipboard!");
+            // Fallback untuk Browser yang tidak mendukung (seperti beberapa browser Desktop tua)
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert("Link produk telah disalin ke clipboard!");
+            } catch (err) {
+                console.error("Gagal menyalin link:", err);
+            }
         }
     };
 

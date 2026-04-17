@@ -26,7 +26,7 @@ export default function Hero() {
             title: "Samsung",
             link: "https://image.thum.io/get/https://www.samsung.com",
             thumbnail:
-                "/hero/samsung.png",
+                "https://image.thum.io/get/https://www.samsung.com",
         },
         {
             title: "Poco",
@@ -59,37 +59,37 @@ export default function Hero() {
             thumbnail:
                 "https://image.thum.io/get/https://www.realme.com",
         },
-        {
-            title: "Huawei",
-            link: "https://huawei.com",
-            thumbnail:
-                "https://image.thum.io/get/https://www.huawei.com",
-        },
-        {
-            title: "Honor",
-            link: "https://honor.com",
-            thumbnail:
-                "https://image.thum.io/get/https://www.honor.com",
-        },
+        // {
+        //     title: "Huawei",
+        //     link: "https://huawei.com",
+        //     thumbnail:
+        //         "https://image.thum.io/get/https://www.huawei.com",
+        // },
+        // {
+        //     title: "Honor",
+        //     link: "https://honor.com",
+        //     thumbnail:
+        //         "https://image.thum.io/get/https://www.honor.com",
+        // },
 
-        {
-            title: "Motorola",
-            link: "https://motorola.com",
-            thumbnail:
-                "https://image.thum.io/get/https://www.motorola.com",
-        },
-        {
-            title: "Red Magic",
-            link: "https://redmagic.gg",
-            thumbnail:
-                "https://image.thum.io/get/https://www.redmagic.gg",
-        },
-        {
-            title: "Google Pixel",
-            link: "https://store.google.com",
-            thumbnail:
-                "https://image.thum.io/get/https://store.google.com/category/phones",
-        },
+        // {
+        //     title: "Motorola",
+        //     link: "https://motorola.com",
+        //     thumbnail:
+        //         "https://image.thum.io/get/https://www.motorola.com",
+        // },
+        // {
+        //     title: "Red Magic",
+        //     link: "https://redmagic.gg",
+        //     thumbnail:
+        //         "https://image.thum.io/get/https://www.redmagic.gg",
+        // },
+        // {
+        //     title: "Google Pixel",
+        //     link: "https://store.google.com",
+        //     thumbnail:
+        //         "https://image.thum.io/get/https://store.google.com/category/phones",
+        // },
     
     ];
 return(
