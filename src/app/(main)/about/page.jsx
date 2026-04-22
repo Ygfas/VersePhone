@@ -18,13 +18,13 @@ export default function abouts(){
         { link: "#", text: "Iqoo", image: "/brand/Iqoo.jpg" },
         { link: "#", text: "Oppo", image: "/brand/oppo.jpg" },
         { link: "#", text: "Realme", image: "/brand/realme.jpg" },
-        { link: "#", text: "Huawei", image: "/brand/Huawei.jpg" },
-        { link: "#", text: "Honor", image: "/brand/Honor.jpg" },
+        // { link: "#", text: "Huawei", image: "/brand/Huawei.jpg" },
+        // { link: "#", text: "Honor", image: "/brand/Honor.jpg" },
         { link: "#", text: "Tecno", image: "/brand/Tecno.jpg" },
         { link: "#", text: "Infinix", image: "/brand/Infinix.jpg" },
-        { link: "#", text: "Motorola", image: "/brand/Motorola.jpg" },
-        { link: "#", text: "Pixel", image: "/brand/googlepixel.jpg" },
-        { link: "#", text: "Red magic", image: "/brand/redmagic.jpg" },
+        // { link: "#", text: "Motorola", image: "/brand/Motorola.jpg" },
+        // { link: "#", text: "Pixel", image: "/brand/googlepixel.jpg" },
+        // { link: "#", text: "Red magic", image: "/brand/redmagic.jpg" },
 
     ];
     return(

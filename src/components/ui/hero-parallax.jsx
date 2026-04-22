@@ -1,24 +1,55 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import { ArrowRight, } from "lucide-react";
-
 import Link from "next/link";
 import { InteractiveHoverButton } from "./interactive-hover-button";
 import { LineShadowText } from "./line-shadow-text";
-import { AuroraText } from "./aurora-text"
+import { AuroraText } from "./aurora-text";
+
+// Menggunakan memo untuk mencegah re-render saat scroll progress berubah
+const ProductCard = React.memo(({ product, translate }) => {
+  return (
+    <motion.div
+      style={{
+        x: translate,
+      }}
+      whileHover={{
+        y: -20,
+      }}
+      className="group/product h-42 w-76 md:h-90 md:w-[30rem] relative shrink-0 will-change-transform"
+    >
+      <Link href={product.link} className="block group-hover/product:shadow-2xl">
+        <img
+          src={product.thumbnail}
+          height="600"
+          width="600"
+          loading="lazy" // Lazy load untuk gambar di luar viewport
+          className="object-cover object-left-top absolute h-full w-full inset-0"
+          alt={product.title}
+        />
+      </Link>
+      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none transition-opacity duration-300"></div>
+      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white transition-opacity duration-300">
+        {product.title}
+      </h2>
+    </motion.div>
+  );
+});
+
+ProductCard.displayName = "ProductCard";
 
 export const HeroParallax = ({ products }) => {
-  const firstRow = products.slice(0, 5);
-  const secondRow = products.slice(5, 10);
-  const thirdRow = products.slice(10, 15);
+  const firstRow = useMemo(() => products.slice(0, 5), [products]);
+  const secondRow = useMemo(() => products.slice(5, 10), [products]);
+  const thirdRow = useMemo(() => products.slice(10, 15), [products]);
+
   const ref = React.useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  const springConfig = { stiffness: 300, damping: 30, bounce: 0 }; // Mengurangi bounce berlebih untuk stabilitas frame
 
   const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig);
   const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig);
@@ -40,6 +71,7 @@ export const HeroParallax = ({ products }) => {
           translateY,
           opacity,
         }}
+        className="will-change-transform"
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
           {firstRow.map((product) => (
@@ -60,57 +92,25 @@ export const HeroParallax = ({ products }) => {
     </div>
   );
 };
-
-export const Header = () => {
-  return (
-    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <h1 className="text-6xl md:text-8xl font-bold dark:text-white text-black">
-        <AuroraText>Verse</AuroraText>
-        <LineShadowText >Phone</LineShadowText>
-      </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200 text-neutral-700">
-       
-        We build beautiful products with the latest technologies and frameworks.
-        We are a team of passionate developers and designers.
-      </p>
-      <div className="mt-10">
-        <Link href="/login" passHref legacyBehavior>
-          <InteractiveHoverButton className="shadow-lg">
-            Belanja Sekarang
-          </InteractiveHoverButton>
-        </Link>
-      </div>
-    </div>
-  );
-};
-
-export const ProductCard = ({ product, translate }) => {
-  return (
-    <motion.div
-      style={{
-        x: translate,
-      }}
-      whileHover={{
-        y: -20,
-      }}
-      key={product.title}
-      // MENGUBAH UKURAN DI SINI: 
-      // w-72 h-48 (Mobile) | md:w-[30rem] md:h-96 (Desktop)
-      className="group/product h-42 w-76 md:h-90 md:w-[30rem] relative shrink-0"
-    >
-      <Link href={product.link} className="block group-hover/product:shadow-2xl">
-        <img
-          src={product.thumbnail}
-          height="600"
-          width="600"
-          className="object-cover object-left-top absolute h-full w-full inset-0"
-          alt={product.title}
-        />
-      </Link>
-      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none transition-opacity duration-300"></div>
-      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white transition-opacity duration-300">
-        {product.title}
-      </h2>
-    </motion.div>
-  );
-};
+    export const Header = () => {
+      return (
+        <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
+          <h1 className="text-6xl md:text-8xl font-bold dark:text-white text-black">
+            <AuroraText>Verse</AuroraText>
+            <LineShadowText >Phone</LineShadowText>
+          </h1>
+          <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200 text-neutral-700">
+           
+            We build beautiful products with the latest technologies and frameworks.
+            We are a team of passionate developers and designers.
+          </p>
+          <div className="mt-10">
+            <Link href="/login" passHref legacyBehavior>
+              <InteractiveHoverButton className="shadow-lg">
+                Belanja Sekarang
+              </InteractiveHoverButton>
+            </Link>
+          </div>
+        </div>
+      );
+    };

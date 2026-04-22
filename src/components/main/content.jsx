@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { WobbleCard } from "../ui/wobble-card";
 import { MediaModal } from "../ui/media-modal";
 import FramerDraggableCarousel from "../ui/carousel";
 
 /**
- * Komponen Konten yang Muncul Saat Kartu Diklik
- * Properti title, description, dan image sekarang dinamis
+ * Optimasi 1: React.memo pada CardContent
+ * Mencegah render ulang modal content jika props tidak berubah.
  */
-const CardContent = ({ title, description, image }) => {
+const CardContent = React.memo(({ title, description, image }) => {
     return (
         <div className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4">
             <div className="max-w-3xl mx-auto">
@@ -22,14 +22,17 @@ const CardContent = ({ title, description, image }) => {
                 <img
                     src={image}
                     alt={title}
+                    loading="lazy" // Optimasi: Lazy load gambar modal
+                    decoding="async"
                     className="w-full h-auto mx-auto object-contain rounded-xl shadow-sm"
                 />
             </div>
         </div>
     );
-};
+});
 
-// Data yang telah disinkronkan: Isi content sama dengan data sampul
+CardContent.displayName = "CardContent";
+
 const data = [
     {
         category: "Artificial Intelligence",
@@ -112,13 +115,16 @@ const data = [
 ];
 
 export default function Content() {
-    const cards = data.map((card, index) => (
+    /**
+     * Optimasi 2: useMemo untuk Carousel Cards
+     * Mencegah array cards dibuat ulang setiap kali komponen Content render ulang.
+     */
+    const cards = useMemo(() => data.map((card, index) => (
         <Card key={index} card={card} index={index} />
-    ));
+    )), []);
 
     return (
         <div className="w-[92%] md:w-[95%] mx-auto py-20 space-y-16">
-
             <header>
                 <h2 className="text-2xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans tracking-tight">
                     Get to know your iSad.
@@ -136,8 +142,9 @@ export default function Content() {
 
                 <div className="flex-1 min-w-[350px]">
                     <div className="grid grid-cols-2 gap-4 h-full">
+                        {/* Optimasi 3: Static Array */}
                         {[1, 2, 3, 4].map((item) => (
-                            <div key={item} className="w-full aspect-video rounded-3xl overflow-hidden shadow-md">
+                            <div key={item} className="w-full aspect-video rounded-3xl overflow-hidden shadow-md bg-neutral-100 dark:bg-neutral-900">
                                 <MediaModal
                                     videoSrc="https://videos.pexels.com/video-files/7710243/7710243-uhd_2560_1440_30fps.mp4"
                                 />
@@ -148,21 +155,20 @@ export default function Content() {
             </section>
 
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
-                <WobbleCard
-                    containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
-                >
+                {/* Optimasi 4: Hardware Acceleration with will-change-transform di CSS jika diperlukan */}
+                <WobbleCard containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]">
                     <div className="max-w-xs">
                         <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                             Gippity AI powers the entire universe
                         </h2>
                         <p className="mt-4 text-left text-base/6 text-neutral-200">
-                            With over 100,000 monthly active bot users, Gippity AI is the most
-                            popular AI platform for developers.
+                            With over 100,000 monthly active bot users.
                         </p>
                     </div>
                     <img
                         src="/linear.webp"
                         alt="linear demo"
+                        loading="lazy"
                         className="absolute -right-4 lg:-right-[40%] grayscale filter -bottom-10 object-contain rounded-2xl w-[500px]"
                     />
                 </WobbleCard>
@@ -172,7 +178,7 @@ export default function Content() {
                         No shirt, no shoes, no weapons.
                     </h2>
                     <p className="mt-4 max-w-[26rem] text-left text-base/6 text-neutral-200">
-                        If someone yells “stop!”, goes limp, or taps out, the fight is over.
+                        If someone yells “stop!”, the fight is over.
                     </p>
                 </WobbleCard>
 
@@ -181,13 +187,11 @@ export default function Content() {
                         <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                             Blazing-fast Gippity AI wrapper today!
                         </h2>
-                        <p className="mt-4 max-w-[26rem] text-left text-base/6 text-neutral-200">
-                            The most advanced integration for your daily development workflow.
-                        </p>
                     </div>
                     <img
                         src="/linear.webp"
                         alt="linear demo"
+                        loading="lazy"
                         className="absolute -right-10 md:-right-[40%] lg:-right-[20%] -bottom-10 object-contain rounded-2xl w-[500px]"
                     />
                 </WobbleCard>
