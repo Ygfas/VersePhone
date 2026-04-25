@@ -46,10 +46,48 @@ export const INITIAL_CART = [
             ]
         }
     },
+    {
+        id: 2,
+        name: "Y05",
+        basePrice: 1900000,
+        price: 2100000,
+        image: "/test1.png",
+        qty: 1,
+        checked: false,
+        selectedColor: 'Glowing White',
+        selectedStorage: '128GB',
+        selectedRam: '4GB',
+        options: {
+            colors: ['Glowing White', 'Midnight Blue'],
+            variants: [
+                { ram: '4GB', storage: '64GB', extra: 0 },
+                { ram: '4GB', storage: '128GB', extra: 200000 },
+            ]
+        }
+    },
+    {
+        id: 2,
+        name: "Y05",
+        basePrice: 1900000,
+        price: 2100000,
+        image: "/test1.png",
+        qty: 1,
+        checked: false,
+        selectedColor: 'Glowing White',
+        selectedStorage: '128GB',
+        selectedRam: '4GB',
+        options: {
+            colors: ['Glowing White', 'Midnight Blue'],
+            variants: [
+                { ram: '4GB', storage: '64GB', extra: 0 },
+                { ram: '4GB', storage: '128GB', extra: 200000 },
+            ]
+        }
+    },
 ];
 
 export default function CartComponent() {
-    // State untuk mengelola data yang bisa berubah
+
     const [cart, setCart] = useState(INITIAL_CART);
     const [deleteConfirm, setDeleteConfirm] = useState(null);
 
@@ -96,11 +134,11 @@ export default function CartComponent() {
     const totalHarga = cart.filter(i => i.checked).reduce((acc, i) => acc + (i.price * i.qty), 0);
 
     return (
-        <div className="relative h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col overflow-hidden font-sans">
-            <div className="flex-1 overflow-y-auto pt-10 sm:pt-32 pb-48 custom-scrollbar">
+        <div className="relative h-screen bg-white/95 dark:bg-neutral-900 flex flex-col overflow-hidden font-sans ">
+            <div className="flex-1 overflow-y-auto pt-5 pb-48 no-scrollbar">
                 <div className="w-full px-4 sm:px-10 lg:px-20">
                     <div className="flex justify-between items-center mb-6 sm:mb-10">
-                        <h1 className="text-2xl p-5 sm:text-5xl font-black tracking-tighter">Keranjang Anda</h1>
+                        <h1 className="text-2xl p-5 sm:text-3xl font-black tracking-tighter">Keranjang Anda</h1>
                         <button onClick={() => setCart([])} className="text-red-500 gap-2 flex justify-center font-bold text-md bg-red-50 hover:bg-red-100 px-5 py-2 rounded-full transition-all">
                             Bersihkan<Trash2 className='text-sm w-5 h-5'></Trash2>
                         </button>

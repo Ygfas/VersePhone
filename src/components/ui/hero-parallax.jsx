@@ -16,7 +16,7 @@ const ProductCard = React.memo(({ product, translate }) => {
       whileHover={{
         y: -20,
       }}
-      className="group/product h-42 w-76 md:h-90 md:w-[30rem] relative shrink-0 will-change-transform"
+      className="group/product h-65 w-80 md:h-90 md:w-[30rem] relative shrink-0 will-change-transform"
     >
       <Link href={product.link} className="block group-hover/product:shadow-2xl">
         <img
@@ -49,7 +49,7 @@ export const HeroParallax = ({ products }) => {
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 0 }; // Mengurangi bounce berlebih untuk stabilitas frame
+  const springConfig = { stiffness: 300, damping: 30, bounce: 0 }; 
 
   const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig);
   const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig);
@@ -61,7 +61,7 @@ export const HeroParallax = ({ products }) => {
   return (
     <div
       ref={ref}
-      className="lg:h-[160vh] h-[130vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="2xl:h-[160vh] md:h-[120vh] h-[130vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div

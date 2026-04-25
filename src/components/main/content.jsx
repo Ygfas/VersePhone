@@ -142,14 +142,26 @@ export default function Content() {
 
                 <div className="flex-1 min-w-[350px]">
                     <div className="grid grid-cols-2 gap-4 h-full">
-                        {/* Optimasi 3: Static Array */}
-                        {[1, 2, 3, 4].map((item) => (
-                            <div key={item} className="w-full aspect-video rounded-3xl overflow-hidden shadow-md bg-neutral-100 dark:bg-neutral-900">
-                                <MediaModal
-                                    videoSrc="https://videos.pexels.com/video-files/7710243/7710243-uhd_2560_1440_30fps.mp4"
-                                />
-                            </div>
-                        ))}
+                        <MediaModal
+                            videoSrc={
+                                '/video/vivo.mp4'
+                            }
+                        />
+                        <MediaModal
+                            videoSrc={
+                                '/video/samsung.mp4'
+                            }
+                        />
+                        <MediaModal
+                            videoSrc={
+                                '/video/apple.mp4'
+                            }
+                        />
+                        <MediaModal
+                            videoSrc={
+                                '/video/xiaomi.mp4'
+                            }
+                        />
                     </div>
                 </div>
             </section>

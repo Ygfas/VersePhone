@@ -17,17 +17,15 @@ export default function Home() {
       {/* Navbar dan ScrollProgress harus sejajar, bukan di dalam pembungkus konten */}
 
 
-    
+   
 
       <div className="relative w-full">
        
       </div>
-          <div className="md:h-[4100px] h-[3700px] xl:h-[3300px]">
+          <div className="sm:h-[4200px] h-[3700px] xl:h-[4100px] 2xl:h-[3300px]">
            
             <Hero />
             <Content />
-
-
 
           </div>
 
