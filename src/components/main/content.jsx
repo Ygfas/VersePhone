@@ -3,6 +3,9 @@ import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { WobbleCard } from "../ui/wobble-card";
 import { MediaModal } from "../ui/media-modal";
 import FramerDraggableCarousel from "../ui/carousel";
+import { DiaTextReveal } from "../ui/dia-text-reveal";
+import SpotlightCard from "../ui/SpotlightCard";
+
 
 /**
  * Optimasi 1: React.memo pada CardContent
@@ -124,11 +127,21 @@ export default function Content() {
     )), []);
 
     return (
-        <div className="w-[92%] md:w-[95%] mx-auto py-20 space-y-16">
+        <div className="w-[92%] md:w-[95%] mx-auto space-y-8 pt-10">
             <header>
-                <h2 className="text-2xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans tracking-tight">
-                    Get to know your iSad.
-                </h2>
+                <div className="flex min-h-45 items-center justify-center pt-10 ">
+                    <DiaTextReveal
+                        className="text-5xl font-bold tracking-tight"
+                        colors={["#f97316", "#eab308", "#22c55e", "#3b82f6", "#a855f7"]}
+                        delay={0.35}
+                        duration={2.4}
+                        text="Artikel Terbaru "
+                        once={true} // Ini kuncinya agar tidak reset saat scroll
+                        startOnView={true}
+                    />
+
+
+                </div>
             </header>
 
             <section className="w-full">
@@ -168,45 +181,45 @@ export default function Content() {
 
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                 {/* Optimasi 4: Hardware Acceleration with will-change-transform di CSS jika diperlukan */}
-                <WobbleCard containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]">
-                    <div className="max-w-xs">
-                        <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-                            Gippity AI powers the entire universe
+                <SpotlightCard className=" min-h-[500px] lg:min-h-[300px] col-span-1 lg:col-span-2 " spotlightColor="rgba(0, 229, 255, 0.2)">
+                    <WobbleCard containerClassName="h-full bg-black/20 ">
+
+                        <div className="max-w-xs">
+                            <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] dark:text-white teks-black">
+                                Gippity AI powers the entire universe
+                            </h2>
+                            <p className="mt-4 text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                                With over 100,000 monthly active bot users.
+                            </p>
+                        </div>
+
+
+                    </WobbleCard>
+                </SpotlightCard>
+                <SpotlightCard className='col-span-1 min-h-[300px]' spotlightColor="rgba(0, 229, 255, 0.2) ">
+
+                    <WobbleCard containerClassName="h-full bg-black/20 ">
+                        <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
+                            No shirt, no shoes, no weapons.
                         </h2>
-                        <p className="mt-4 text-left text-base/6 text-neutral-200">
-                            With over 100,000 monthly active bot users.
+                        <p className="mt-4 max-w-[26rem] text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                            If someone yells “stop!”, the fight is over.
                         </p>
-                    </div>
-                    <img
-                        src="/linear.webp"
-                        alt="linear demo"
-                        loading="lazy"
-                        className="absolute -right-4 lg:-right-[40%] grayscale filter -bottom-10 object-contain rounded-2xl w-[500px]"
-                    />
-                </WobbleCard>
+                    </WobbleCard>
+                </SpotlightCard>
+                <SpotlightCard className='col-span-1 lg:col-span-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]' spotlightColor="rgba(0, 229, 255, 0.2) "> 
 
-                <WobbleCard containerClassName="col-span-1 min-h-[300px] bg-zinc-900">
-                    <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-                        No shirt, no shoes, no weapons.
-                    </h2>
-                    <p className="mt-4 max-w-[26rem] text-left text-base/6 text-neutral-200">
-                        If someone yells “stop!”, the fight is over.
-                    </p>
-                </WobbleCard>
-
-                <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
+                    <WobbleCard containerClassName="h-full bg-black/20" >
                     <div className="max-w-sm">
-                        <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+                            <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
                             Blazing-fast Gippity AI wrapper today!
                         </h2>
                     </div>
-                    <img
-                        src="/linear.webp"
-                        alt="linear demo"
-                        loading="lazy"
-                        className="absolute -right-10 md:-right-[40%] lg:-right-[20%] -bottom-10 object-contain rounded-2xl w-[500px]"
-                    />
+                  
                 </WobbleCard>
+                </SpotlightCard>
+
+
             </section>
         </div>
     );

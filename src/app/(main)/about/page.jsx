@@ -29,7 +29,11 @@ export default function abouts(){
     ];
     return(
         <>
+            <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4">
+                Tentang
+            </h1>
             <div style={{ height: '600px', position: 'relative' }} className="mt-10">
+
                 <FlowingMenu items={demoItems}
                     speed={15}
                     textColor="#ffffff"

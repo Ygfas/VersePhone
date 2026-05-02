@@ -173,16 +173,18 @@ export default function ProductDetail() {
                         </section>
 
                         {/* DESKRIPSI SINGKAT */}
-                        <section className="text-slate-600 dark:text-slate-400 leading-relaxed italic border-l-4 border-blue-600 pl-4">
+                        {/* <section className="text-slate-600 dark:text-slate-400 leading-relaxed italic border-l-4 border-blue-600 pl-4">
                             "{product.description}"
-                        </section>
+                        </section> */}
 
                         {/* BUTTONS */}
                         <div className="flex flex-col gap-4 pt-4">
+                            <Link href={'/payment'}>
                             <motion.div variants={itemVariants} className="mt-8 flex justify-center" >
-                                <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-l-2xl bg-orange-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Tambah Pesanan</motion.button>
-                                <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-r-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Beli Sekarang</motion.button>
+                                {/* <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-l-2xl bg-orange-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Tambah Pesanan</motion.button> */}
+                                <motion.button whileTap={{ scale: 0.90 }} className="w-[25vw] rounded-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-80 active:scale-[0.98] ">Beli Sekarang</motion.button>
                             </motion.div>
+                            </Link>
                             <div className="grid grid-cols-2 gap-3">
                                 <button className="py-4 border border-slate-200 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white">
                                     <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>

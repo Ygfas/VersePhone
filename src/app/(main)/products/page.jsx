@@ -6,12 +6,15 @@ import { motion } from "framer-motion"
 import FilterItems from "@/components/ui/filter-items"
 import { products, formatPrice } from "@/lib/products"
 
+
 export default function Products() {
     return (
+
+        
         <div className="relative min-h-screen bg-[#F8FAFC] dark:bg-neutral-900">
             <div className="pb-24 lg:px-20 bg-slate-100/50 dark:bg-neutral-900">
                 <FilterItems />
-
+               
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -29,6 +32,7 @@ export default function Products() {
                 Ganti Dialog + DialogTrigger dengan Link biasa.
                 Klik card → navigasi ke /products/[slug]
               */}
+              
                             <Link href={`/products/${item.slug}`} className="block group outline-none">
                                 <motion.div
                                     whileHover={{ y: -8 }}

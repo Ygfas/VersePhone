@@ -61,7 +61,7 @@ export const FloatingNav = ({ navItems, className }) => {
             onAnimationComplete={() => { isAnimatingRef.current = false; }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="fixed top-0 left-0 w-full z-[30] hidden sm:block"
+            className="fixed top-0 left-0 w-full z-[40] hidden sm:block"
           >
             <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-black dark:border-white/10">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
@@ -263,14 +263,14 @@ export const FloatingNav = ({ navItems, className }) => {
               </button>
             </Link>
 
-            <Link href="/cart">
+            {/* <Link href="/cart">
               <div className="relative p-3 text-neutral-600 dark:text-neutral-300">
                 <ShoppingCart size={22} />
                 <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white dark:ring-black">
                   3
                 </span>
               </div>
-            </Link>
+            </Link> */}
           </div>
         </motion.div>
       </div>

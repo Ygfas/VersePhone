@@ -52,7 +52,7 @@ export default function FramerDraggableCarousel() {
     }, [index, x, isDragging]);
 
     return (
-        <div className="w-full max-w-4xl mx-auto ">
+        <div className="w-full max-w-5xl mx-auto ">
             <div className="flex flex-col gap-3">
                 <div className="relative overflow-hidden rounded-lg" ref={containerRef}>
                     <motion.div

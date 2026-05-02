@@ -5,6 +5,8 @@ import Link from "next/link";
 import { InteractiveHoverButton } from "./interactive-hover-button";
 import { LineShadowText } from "./line-shadow-text";
 import { AuroraText } from "./aurora-text";
+import { TextAnimate } from "./text-animate";
+
 
 // Menggunakan memo untuk mencegah re-render saat scroll progress berubah
 const ProductCard = React.memo(({ product, translate }) => {
@@ -99,11 +101,13 @@ export const HeroParallax = ({ products }) => {
             <AuroraText>Verse</AuroraText>
             <LineShadowText >Phone</LineShadowText>
           </h1>
-          <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200 text-neutral-700">
+          <TextAnimate animation='blurIn' as="h1" className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200 text-neutral-700 font-mono">
            
-            We build beautiful products with the latest technologies and frameworks.
-            We are a team of passionate developers and designers.
-          </p>
+           Pusat gadget terlengkap yang menghadirkan teknologi terbaru untuk medukung produktivitas dan gaya hidup digital Anda.
+           Pusat Smartphone Original dengan Garanasi Resmi 
+           
+          </TextAnimate>
+          
           <div className="mt-10">
             <Link href="/login" passHref legacyBehavior>
               <InteractiveHoverButton className="shadow-lg">
