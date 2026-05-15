@@ -33,7 +33,7 @@ export function MediaModal({ imgSrc, videoSrc }) {
       {/* Trigger / Thumbnail */}
       <motion.div
        
-        className="w-full aspect-video flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-black bg-neutral-300 rounded-xl"
+        className="w-full h-full aspect-video flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-neutral-800 bg-neutral-300 rounded-xl"
         layoutId={`dialog-${uniqueId}`}
         onClick={() => setIsMediaModalOpen(true)}
       >
@@ -44,7 +44,7 @@ export function MediaModal({ imgSrc, videoSrc }) {
         )}
         {videoSrc && (
           <motion.div layoutId={`dialog-video-${uniqueId}`} className="w-full h-full">
-            <video autoPlay muted loop className="h-full w-full object-cover">
+            <video autoPlay muted loop className="h-full w-full  object-contain">
               <source src={videoSrc} type="video/mp4" />
             </video>
           </motion.div>

@@ -1,134 +1,176 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, animate } from 'motion/react';
+import { motion, useMotionValue, animate, AnimatePresence, MotionConfig } from 'motion/react';
+import { XIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const items = [
-    // ... data items Anda tetap sama
-    { id: 6, url: 'https://images.unsplash.com/photo-1760389005000-bf02bf24f463?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1123', title: 'DONM FLY' },
-    { id: 5, url: 'https://images.unsplash.com/photo-1761078980679-e89e25fe279b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687', title: 'SONYPOO' },
-    { id: 3, url: 'https://images.unsplash.com/photo-1761882725885-d3d8bd2032d1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687', title: 'AUSIZE MAM' },
-    { id: 4, url: 'https://images.unsplash.com/photo-1761775915848-467e41c1c4db?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=689', title: 'RECLKTIKA' },
-    { id: 1, url: 'https://images.unsplash.com/photo-1761882835101-02ab45ac0726?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=690', title: 'MAXX PHAM' },
-    { id: 2, url: 'https://images.unsplash.com/photo-1661980494567-40a5e01b699b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=685', title: 'BOXIEN BAY' },
-    { id: 7, url: 'https://images.unsplash.com/photo-1761165307495-56bd564d322f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=663', title: 'Snowy Mountain Highway' },
-    { id: 8, url: 'https://images.unsplash.com/photo-1756299792672-157811bf1005?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074', title: 'FOGGY FOLS' },
-    { id: 9, url: 'https://images.unsplash.com/photo-1572851899646-a1f69c664e1e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170', title: 'DIM DARKO' },
-    { id: 10, url: 'https://images.unsplash.com/photo-1759247178379-0e8eba83a4a6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687', title: 'BEALIVE' },
-    { id: 11, url: 'https://images.unsplash.com/photo-1754968230523-052635c98f99?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=736', title: 'DOMEDOM ROME' },
-    { id: 12, url: 'https://images.unsplash.com/photo-1643037508102-46fb319979c5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764', title: 'IKEIMON POVE' },
+    { id: 6, url: '/thumbnail/ip1.jpg', title: 'ip' },
+    { id: 5, url: '/thumbnail/xiaomi.jpg', title: 'xiaomi' },
+    { id: 3, url: '/thumbnail/vivo1.jpg', title: 'vivio' },
+    { id: 4, url: '/thumbnail/iqoo1.jpg', title: 'iqoo' },
+    { id: 1, url: '/thumbnail/samsung.jpg', title: 'samsung' },
+    { id: 2, url: '/thumbnail/oppo1.jpg', title: 'oppo' },
+    { id: 7, url: '/thumbnail/infinix1.jpg', title: 'Snowy Mountain Highway' },
 ];
+
+export const transition = {
+    type: "spring",
+    stiffness: 300,
+    damping: 30,
+    mass: 0.5,
+};
 
 export default function FramerDraggableCarousel() {
     const [index, setIndex] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
+    const [selectedImg, setSelectedImg] = useState(null);
     const containerRef = useRef(null);
     const x = useMotionValue(0);
+
+    // Auto-scroll logic
     useEffect(() => {
-        // Jangan jalankan auto-scroll jika sedang di-drag
-        if (isDragging) return;
-
+        if (isDragging || selectedImg) return;
         const interval = setInterval(() => {
-            setIndex((prevIndex) => {
-                // Jika sudah sampai di item terakhir, balik ke awal (loop)
-                // Atau gunakan: Math.min(prevIndex + 1, items.length - 1) jika tidak ingin loop
-                return prevIndex === items.length - 1 ? 0 : prevIndex + 1;
-            });
-        }, 5000); // 5000ms = 5 detik
-
-        // Bersihkan interval saat komponen di-unmount atau saat isDragging berubah
+            setIndex((prevIndex) => prevIndex === items.length - 1 ? 0 : prevIndex + 1);
+        }, 8000);
         return () => clearInterval(interval);
-    }, [isDragging, items.length]);
-    
+    }, [isDragging, selectedImg]);
+
+    // Spring animation for carousel
     useEffect(() => {
         if (!isDragging && containerRef.current) {
             const containerWidth = containerRef.current.offsetWidth || 1;
             const targetX = -index * containerWidth;
             animate(x, targetX, {
                 type: 'spring',
-                stiffness: 250, // Sedikit lebih lembut untuk mobile
+                stiffness: 250,
                 damping: 30,
             });
         }
     }, [index, x, isDragging]);
 
+    // Handle Escape key & Scroll Lock
+    useEffect(() => {
+        if (selectedImg) {
+            document.body.classList.add("overflow-hidden");
+            const handleKeyDown = (e) => { if (e.key === "Escape") setSelectedImg(null); };
+            document.addEventListener("keydown", handleKeyDown);
+            return () => {
+                document.removeEventListener("keydown", handleKeyDown);
+                document.body.classList.remove("overflow-hidden");
+            };
+        }
+    }, [selectedImg]);
+
     return (
-        <div className="w-full max-w-5xl mx-auto ">
-            <div className="flex flex-col gap-3">
-                <div className="relative overflow-hidden rounded-lg" ref={containerRef}>
-                    <motion.div
-                        className="flex cursor-grab active:cursor-grabbing"
-                        drag="x"
-                        dragConstraints={containerRef} // Tambahkan batas agar tidak over-drag berlebihan
-                        dragElastic={0.2}
-                        onDragStart={() => setIsDragging(true)}
-                        onDragEnd={(e, info) => {
-                            setIsDragging(false);
-                            const containerWidth = containerRef.current?.offsetWidth || 1;
-                            const { offset, velocity } = info;
+        <MotionConfig transition={transition}>
+            <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
+                <div className="flex flex-col gap-3">
+                    <div className="relative overflow-hidden rounded-xl bg-slate-200 dark:bg-zinc-900 transition-colors duration-300" ref={containerRef}>
+                        <motion.div
+                            className="flex cursor-grab active:cursor-grabbing"
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragStart={() => setIsDragging(true)}
+                            onDragEnd={(e, info) => {
+                                setIsDragging(false);
+                                const containerWidth = containerRef.current?.offsetWidth || 1;
+                                const { offset, velocity } = info;
+                                if (velocity.x < -400 || offset.x < -containerWidth / 4) {
+                                    setIndex((prev) => Math.min(items.length - 1, prev + 1));
+                                } else if (velocity.x > 400 || offset.x > containerWidth / 4) {
+                                    setIndex((prev) => Math.max(0, prev - 1));
+                                }
+                            }}
+                            style={{ x }}
+                        >
+                            {items.map((item) => (
+                                <div key={item.id} className="shrink-0 w-full h-[350px] md:h-[600px] flex items-center justify-center overflow-hidden">
+                                    <motion.div
+                                        layoutId={`img-container-${item.id}`}
+                                        className="w-full h-full cursor-zoom-in"
+                                        onClick={() => !isDragging && setSelectedImg(item)}
+                                    >
+                                        <motion.img
+                                            layoutId={`img-${item.id}`}
+                                            src={item.url}
+                                            alt={item.title}
+                                            className="w-full h-full object-contain select-none pointer-events-none"
+                                            draggable={false}
+                                        />
+                                    </motion.div>
+                                </div>
+                            ))}
+                        </motion.div>
 
-                            // Logic geser: Sensitivitas swipe ditingkatkan untuk mobile
-                            if (velocity.x < -400 || offset.x < -containerWidth / 4) {
-                                setIndex((prev) => Math.min(items.length - 1, prev + 1));
-                            } else if (velocity.x > 400 || offset.x > containerWidth / 4) {
-                                setIndex((prev) => Math.max(0, prev - 1));
-                            }
-                        }}
-                        style={{ x }}
-                    >
-                        {items.map((item) => (
-                            <div key={item.id} className="shrink-0 w-full h-[400px]">
-                                <img
-                                    src={item.url}
-                                    alt={item.title}
-                                    className="w-full h-full object-cover rounded-lg select-none pointer-events-none"
-                                    draggable={false}
-                                />
-                            </div>
-                        ))}
-                    </motion.div>
+                        {/* Navigation Buttons */}
+                        <motion.button
+                            disabled={index === 0}
+                            onClick={() => setIndex((i) => Math.max(0, i - 1))}
+                            className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full items-center justify-center shadow-lg transition-all z-10 hidden md:flex ${index === 0 ? 'opacity-0 pointer-events-none' : 'bg-white/90 dark:bg-zinc-800/90 text-zinc-900 dark:text-white hover:scale-110'}`}
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                        </motion.button>
 
-                    {/* Tombol Kiri - Hidden di mobile (hidden), muncul di md ke atas (md:flex) */}
-                    <motion.button
-                        disabled={index === 0}
-                        onClick={() => setIndex((i) => Math.max(0, i - 1))}
-                        className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full items-center justify-center shadow-lg transition-transform z-10 hidden md:flex
-              ${index === 0
-                                ? 'opacity-40 cursor-not-allowed'
-                                : 'bg-white hover:scale-110 hover:opacity-100 opacity-70'
-                            }`}
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </motion.button>
+                        <motion.button
+                            disabled={index === items.length - 1}
+                            onClick={() => setIndex((i) => Math.min(items.length - 1, i + 1))}
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full items-center justify-center shadow-lg transition-all z-10 hidden md:flex ${index === items.length - 1 ? 'opacity-0 pointer-events-none' : 'bg-white/90 dark:bg-zinc-800/90 text-zinc-900 dark:text-white hover:scale-110'}`}
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                        </motion.button>
 
-                    {/* Tombol Kanan - Hidden di mobile (hidden), muncul di md ke atas (md:flex) */}
-                    <motion.button
-                        disabled={index === items.length - 1}
-                        onClick={() => setIndex((i) => Math.min(items.length - 1, i + 1))}
-                        className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full items-center justify-center shadow-lg transition-transform z-10 hidden md:flex
-              ${index === items.length - 1
-                                ? 'opacity-40 cursor-not-allowed'
-                                : 'bg-white hover:scale-110 hover:opacity-100 opacity-70'
-                            }`}
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </motion.button>
-
-                    {/* Indikator Dot tetap muncul di mobile untuk bantuan visual */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                        {items.map((_, i) => (
-                            <button
-                                key={`dot-${i}`}
-                                onClick={() => setIndex(i)}
-                                className={`h-2 rounded-full transition-all ${i === index ? 'w-8 bg-white' : 'w-2 bg-white/50'}`}
-                            />
-                        ))}
+                        {/* Indicators */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-1.5 rounded-full bg-black/10 dark:bg-white/10 backdrop-blur-sm">
+                            {items.map((_, i) => (
+                                <button key={`dot-${i}`} onClick={() => setIndex(i)} className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? 'w-8 bg-zinc-800 dark:bg-white' : 'w-2 bg-zinc-400 dark:bg-white/40'}`} />
+                            ))}
+                        </div>
                     </div>
                 </div>
+
+                {/* MODAL FULL SCREEN */}
+                <AnimatePresence>
+                    {selectedImg && (
+                        <>
+                            <motion.div
+                                key="backdrop"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setSelectedImg(null)}
+                                className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm cursor-zoom-out"
+                            />
+                            <div className="fixed inset-0 flex items-center justify-center z-[60] pointer-events-none p-4">
+                                <motion.div
+                                    layoutId={`img-container-${selectedImg.id}`}
+                                    className={cn(
+                                        "pointer-events-auto relative flex flex-col overflow-hidden bg-white dark:bg-neutral-950 border shadow-2xl",
+                                        "w-full max-w-[95%] md:max-w-[80%] h-auto max-h-[85vh] rounded-2xl md:rounded-[32px]"
+                                    )}
+                                >
+                                    <motion.div
+                                        layoutId={`img-${selectedImg.id}`}
+                                        className="w-full flex items-center justify-center bg-black overflow-hidden"
+                                        onClick={() => setSelectedImg(null)}
+                                    >
+                                        <img src={selectedImg.url} alt={selectedImg.title} className="w-full h-auto max-h-[85vh] object-contain cursor-zoom-out" />
+                                    </motion.div>
+
+                                    <button
+                                        onClick={() => setSelectedImg(null)}
+                                        className="absolute right-4 top-4 p-2 text-white bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
+                                    >
+                                        <XIcon size={20} />
+                                    </button>
+                                </motion.div>
+                            </div>
+                        </>
+                    )}
+                </AnimatePresence>
             </div>
-        </div>
+        </MotionConfig>
     );
 }
