@@ -11,7 +11,8 @@ export const items = [
     { id: 4, url: '/thumbnail/iqoo1.jpg', title: 'iqoo' },
     { id: 1, url: '/thumbnail/samsung.jpg', title: 'samsung' },
     { id: 2, url: '/thumbnail/oppo1.jpg', title: 'oppo' },
-    { id: 7, url: '/thumbnail/infinix1.jpg', title: 'Snowy Mountain Highway' },
+    { id: 7, url: '/thumbnail/infinix1.jpg', title: 'infinix' },
+    { id: 8, url: '/thumbnail/infinix1.jpg', title: 'infinix' },
 ];
 
 export const transition = {
@@ -67,7 +68,7 @@ export default function FramerDraggableCarousel() {
         <MotionConfig transition={transition}>
             <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
                 <div className="flex flex-col gap-3">
-                    <div className="relative overflow-hidden rounded-xl bg-slate-200 dark:bg-zinc-900 transition-colors duration-300" ref={containerRef}>
+                    <div className="border shadow-xl relative overflow-hidden rounded-xl bg-slate-200 dark:bg-neutral-800 transition-colors duration-300" ref={containerRef}>
                         <motion.div
                             className="flex cursor-grab active:cursor-grabbing"
                             drag="x"

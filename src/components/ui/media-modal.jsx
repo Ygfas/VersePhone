@@ -33,7 +33,7 @@ export function MediaModal({ imgSrc, videoSrc }) {
       {/* Trigger / Thumbnail */}
       <motion.div
        
-        className="w-full h-full aspect-video flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-neutral-800 bg-neutral-300 rounded-xl"
+        className="w-full h-full aspect-video flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-neutral-800 bg-slate-200 rounded-xl shadow-xl"
         layoutId={`dialog-${uniqueId}`}
         onClick={() => setIsMediaModalOpen(true)}
       >
@@ -58,7 +58,7 @@ export function MediaModal({ imgSrc, videoSrc }) {
           <>
             <motion.div
               key={`backdrop-${uniqueId}`}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm" // Lebih gelap agar fokus
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm" 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -69,8 +69,8 @@ export function MediaModal({ imgSrc, videoSrc }) {
                 layoutId={`dialog-${uniqueId}`}
                 className={cn(
                   "pointer-events-auto relative flex flex-col overflow-hidden bg-white dark:bg-neutral-950 border",
-                  "w-full max-w-[95%] md:max-w-[80%]", // Lebar maksimal
-                  "h-auto max-h-[80vh] md:max-h-[90vh]", // Tinggi mengikuti konten, maksimal 80% layar
+                  "w-full max-w-[95%] md:max-w-[80%]", 
+                  "h-auto max-h-[80vh] md:max-h-[90vh]", 
                   "rounded-2xl md:rounded-[32px]"
                 )}
               >

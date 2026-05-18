@@ -5,6 +5,7 @@ import { MediaModal } from "../ui/media-modal";
 import FramerDraggableCarousel from "../ui/carousel";
 import { DiaTextReveal } from "../ui/dia-text-reveal";
 import SpotlightCard from "../ui/SpotlightCard";
+import Image from "next/image";
 
 
 /**
@@ -22,7 +23,7 @@ const CardContent = React.memo(({ title, description, image }) => {
                     <br />
                     {description}
                 </p>
-                <img
+                <Image
                     src={image}
                     alt={title}
                     loading="lazy" // Optimasi: Lazy load gambar modal
@@ -118,10 +119,7 @@ const data = [
 ];
 
 export default function Content() {
-    /**
-     * Optimasi 2: useMemo untuk Carousel Cards
-     * Mencegah array cards dibuat ulang setiap kali komponen Content render ulang.
-     */
+  
     const cards = useMemo(() => data.map((card, index) => (
         <Card key={index} card={card} index={index} />
     )), []);
@@ -136,7 +134,7 @@ export default function Content() {
                         delay={0.35}
                         duration={2.4}
                         text="Artikel Terbaru "
-                        once={true} // Ini kuncinya agar tidak reset saat scroll
+                        once={true} 
                         startOnView={true}
                     />
 
@@ -181,8 +179,11 @@ export default function Content() {
 
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                 {/* Optimasi 4: Hardware Acceleration with will-change-transform di CSS jika diperlukan */}
-                <SpotlightCard className=" min-h-[500px] lg:min-h-[300px] col-span-1 lg:col-span-2 " spotlightColor="rgba(0, 229, 255, 0.2)">
-                    <WobbleCard containerClassName="h-full bg-black/20 ">
+                <SpotlightCard className=" min-h-[500px] lg:min-h-[300px] col-span-1 lg:col-span-2 flex flex-wrap items-center " spotlightColor="rgba(0, 229, 255, 0.2)">
+                  <img src="/thumbnail/ip.jpg" alt="" className="bg-cover h-[60%] mx-auto" />
+                  
+                    <WobbleCard containerClassName="h-[40%] bg-black/20 ">
+                    
 
                         <div className="max-w-xs">
                             <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] dark:text-white teks-black">
@@ -196,9 +197,9 @@ export default function Content() {
 
                     </WobbleCard>
                 </SpotlightCard>
-                <SpotlightCard className='col-span-1 min-h-[300px]' spotlightColor="rgba(0, 229, 255, 0.2) ">
-
-                    <WobbleCard containerClassName="h-full bg-black/20 ">
+                <SpotlightCard className='col-span-1 min-h-[300px] flex flex-wrap' spotlightColor="rgba(0, 229, 255, 0.2) ">
+                    <img src="/thumbnail/vivo.jpg" alt="" className="bg-cover h-[60%]" />
+                    <WobbleCard containerClassName="h-[40%] bg-black/20 ">
                         <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
                             No shirt, no shoes, no weapons.
                         </h2>
@@ -206,10 +207,12 @@ export default function Content() {
                             If someone yells “stop!”, the fight is over.
                         </p>
                     </WobbleCard>
-                </SpotlightCard>
-                <SpotlightCard className='col-span-1 lg:col-span-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]' spotlightColor="rgba(0, 229, 255, 0.2) "> 
 
-                    <WobbleCard containerClassName="h-full bg-black/20" >
+                </SpotlightCard>
+                <SpotlightCard className='col-span-1 lg:col-span-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px] flex' spotlightColor="rgba(0, 229, 255, 0.2) ">\
+                    <img src="/thumbnail/xiaomi1.jpg" alt="" className="bg-cover ha-[60%]:" /> 
+
+                    <WobbleCard containerClassName="h-40% bg-black/20" >
                     <div className="max-w-sm">
                             <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
                             Blazing-fast Gippity AI wrapper today!
