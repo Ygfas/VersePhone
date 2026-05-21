@@ -1,3 +1,4 @@
+'use client'
 import React, { useMemo } from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { WobbleCard } from "../ui/wobble-card";
@@ -26,7 +27,9 @@ const CardContent = React.memo(({ title, description, image }) => {
                 <Image
                     src={image}
                     alt={title}
-                    loading="lazy" // Optimasi: Lazy load gambar modal
+                    width={800} //  PERBAIKAN: Tambahkan width dasar
+                    height={500} // PERBAIKAN: Tambahkan height dasar
+                    loading="lazy"
                     decoding="async"
                     className="w-full h-auto mx-auto object-contain rounded-xl shadow-sm"
                 />
@@ -34,7 +37,6 @@ const CardContent = React.memo(({ title, description, image }) => {
         </div>
     );
 });
-
 CardContent.displayName = "CardContent";
 
 const data = [

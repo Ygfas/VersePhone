@@ -1,14 +1,23 @@
-import mysql from 'mysql12/promise'
-import { connection } from 'next/server'
+import mysql from "mysql2/promise";
 
 const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST || 'localhost',
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PASSWORD || '',
-    databases: process.env.MYSQL_DATABASES || 'db_versephone',
-    waitingForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-})
+  host: process.env.MYSQL_HOST ,
+  user: process.env.MYSQL_USER ,
+  password: process.env.MYSQL_PASSWORD ,
+  database: process.env.MYSQL_DATABASE ,
+});
 
-export default pool
+// Fungsi untuk mengetes koneksi
+export async function testConnection() {
+  try {
+    const connection = await pool.getConnection();
+    console.log("✅ Berhasil terhubung ke database MySQL!");
+    connection.release(); // Lepaskan koneksi kembali ke pool
+    return true;
+  } catch (error) {
+    console.error("❌ Gagal terhubung ke database:", error.message);
+    return false;
+  }
+}
+
+export default pool;

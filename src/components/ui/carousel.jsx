@@ -12,7 +12,7 @@ export const items = [
     { id: 1, url: '/thumbnail/samsung.jpg', title: 'samsung' },
     { id: 2, url: '/thumbnail/oppo1.jpg', title: 'oppo' },
     { id: 7, url: '/thumbnail/infinix1.jpg', title: 'infinix' },
-    { id: 8, url: '/thumbnail/infinix1.jpg', title: 'infinix' },
+    // { id: 8, url: '/thumbnail/infinix1.jpg', title: 'infinix' },
 ];
 
 export const transition = {
