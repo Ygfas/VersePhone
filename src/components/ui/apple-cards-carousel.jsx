@@ -80,7 +80,7 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
       >
         <div
           className={cn(
-            "flex flex-row justify-start gap-4",
+            "flex flex-row justify-start gap-8",
             // Fokus perbaikan di sini:
             "pl-4 md:pl-10", // Kurangi padding dari 24 ke 10 agar lebih ke kiri
             "ml-0 mr-auto w-full" // ml-0 memastikan tidak ada margin kiri otomatis
@@ -184,7 +184,7 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[40rem] md:w-96 dark:bg-neutral-900">
+        className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[40rem] md:w-96 dark:bg-neutral-900 border-2 border-neutral-500">
         <div
           className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/50 via-transparent to-transparent" />
         <div className="relative z-40 p-8">
