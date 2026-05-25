@@ -1,15 +1,63 @@
-'use client' // Pastikan ada use client karena menggunakan state
+'use client'
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ShineBorder } from "@/components/ui/shine-border";
-import React, { useState } from "react"; // Tambahkan ini
-import { Eye, EyeOff } from "lucide-react"; // Import icon untuk mata
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+// Impor useSearchParams untuk membaca query string URL
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
-    // State untuk show/hide password
-    const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
+    // Ambil nilai ?callbackUrl= dari URL jika ada
+    const callbackUrl = searchParams.get("callbackUrl");
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [emailOrUsername, setEmailOrUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const res = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ emailOrUsername, password }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // Beri tahu Router Next.js untuk menarik data session cookie terbaru dari server
+                router.refresh();
+
+                // Berikan sedikit jeda (100ms) agar server sempat memproses cookie baru 
+                // sebelum fungsi redirect di bawah ini dieksekusi
+                setTimeout(() => {
+                    if (data.role === "admin") {
+                        router.push("/dashboard");
+                    } else if (callbackUrl) {
+                        router.push(decodeURIComponent(callbackUrl));
+                    } else {
+                        router.push("/");
+                    }
+                }, 100);
+
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert("Gagal menghubungi server.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
         /* Container Tengah */
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -49,16 +97,19 @@ export default function LoginForm() {
 
                 {/* Content Section */}
                 <div>
-                    <form>
+                    {/* Tambahkan onSubmit di sini */}
+                    <form onSubmit={handleLogin}>
                         <div className="grid w-full items-center gap-4 text-left">
 
                             <div className="flex flex-col space-y-1.5">
                                 <label htmlFor="email" className="text-sm font-medium">Email or Username</label>
                                 <input
                                     id="email"
-                                    type="email"
+                                    type="text" // Ubah jadi text agar bisa input username juga
                                     required
-                                    placeholder="name@example.com"
+                                    value={emailOrUsername}
+                                    onChange={(e) => setEmailOrUsername(e.target.value)}
+                                    placeholder="name@example.com / username"
                                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                 />
                             </div>
@@ -70,7 +121,8 @@ export default function LoginForm() {
                                         id="password"
                                         type={showPassword ? "text" : "password"}
                                         required
-                                        /* Validasi: Awalan Huruf Besar, min 8 karakter, ada angka/simbol */
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         pattern="^[A-Z].{7,}$"
                                         title="Password harus diawali huruf besar dan minimal 8 karakter"
                                         placeholder="Enter your password"
@@ -85,13 +137,14 @@ export default function LoginForm() {
                                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
-                               
                             </div>
                         </div>
 
-                        {/* Footer Section - Button diletakkan di dalam form agar submit validasi jalan */}
+                        {/* Footer Section */}
                         <div className="flex justify-between items-center pt-6 gap-2">
-                            <Button type="submit" className="flex-1">Login</Button>
+                            <Button type="submit" className="flex-1" disabled={isLoading}>
+                                {isLoading ? "Loading..." : "Login"}
+                            </Button>
                         </div>
                     </form>
                 </div>

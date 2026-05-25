@@ -1,6 +1,8 @@
 'use client'
 import FlowingMenu from "@/components/ui/FlowingMenu"
 
+
+
 export default function abouts(){
     // const demoItems = [
     //     { link: '#', text: 'Mojae', image: 'https://picsum.photos/600/400?random=1' },

@@ -6,8 +6,6 @@ import { IconHome, IconMessage, IconUser, IconBrandProducthunt } from "@tabler/i
 import { StickyBanner } from '../ui/sticky-banner';
 import Link from 'next/link';
 
-
-
 // Definisikan navItems di luar komponen agar tidak di-recreate setiap render
 const navItems = [
     {
@@ -32,17 +30,16 @@ const navItems = [
     },
 ];
 
-export default function Navbar() {
+// Terima data 'user' dari Server Component parent
+export default function Navbar({ user }) {
     const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
-        // Ambil inisialisasi awal dari class <html>
         const checkTheme = () => {
             setIsDark(document.documentElement.classList.contains("dark"));
         };
 
         checkTheme();
-
 
         const observer = new MutationObserver(checkTheme);
         observer.observe(document.documentElement, {
@@ -55,8 +52,7 @@ export default function Navbar() {
 
     return (
         <div className="relative">
-
-            <div className="relative flex lg:h-[9vh] h-[8vh]  flex-col overflow-y-auto ">
+            <div className="relative flex lg:h-[9vh] h-[8vh] flex-col overflow-y-auto ">
                 <StickyBanner className="bg-gradient-to-b from-red-400 to-red-600 z-[60]">
                     <p className="mx-0 max-w-[90%] text-white drop-shadow-md md:text-xl">
                         Smartphone baru telah tersedia...!!! {''}
@@ -65,16 +61,14 @@ export default function Navbar() {
                         </Link>
                     </p>
                 </StickyBanner>
-
             </div>
-
 
             <div className="fixed top-6 right-6 z-[55]">
-
-               
+                {/* Kosong atau pasang toggler cadangan jika diperlukan */}
             </div>
 
-            <FloatingNav navItems={navItems} />
+            {/* Oper data user ke FloatingNav */}
+            <FloatingNav navItems={navItems} user={user} />
         </div>
     );
 }
