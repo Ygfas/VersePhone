@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Menu, X, DoorOpenIcon, ArrowRight, User, LogOut, ShieldCheck, LogIn, UserPlus } from "lucide-react";
@@ -8,22 +8,13 @@ import { useRouter } from "next/navigation";
 import { NavSearch } from "./floating-search";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
 
-const products = [
-  { name: "Y05", image: "/test1.png", status: "baru" },
-  { name: "X300 Pro", image: "/test2.png", status: "baru" },
-  { name: "X300", image: "/4e0e2a2fdc70a2deea769ed379b90c44.png", status: "baru" },
-  { name: "Y21d", image: "/test1.png", status: "baru" },
-  { name: "V60 Lite 5G", image: "/test1.png", status: "baru" },
-  { name: "V60 Lite", image: "/test1.png", status: "baru" },
-  { name: "V60", image: "/test1.png", status: "baru" },
-];
-
 export const FloatingNav = ({ navItems, user: serverUser, className }) => {
   const [isProductOpen, setIsProductOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // Ambil data user ke dalam state lokal agar bisa berubah instan saat login/logout
+  // State untuk menampung data produk dari database secara dinamis
+  const [dynamicProducts, setDynamicProducts] = useState([]);
   const [user, setUser] = useState(serverUser);
 
   const openTimeoutRef = useRef(null);
@@ -31,10 +22,26 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
   const isAnimatingRef = useRef(false);
   const router = useRouter();
 
-  // Sinkronisasikan state lokal jika data user dari Server Component berubah
   useEffect(() => {
     setUser(serverUser);
   }, [serverUser]);
+
+  // Fetching data produk dinamis dari database saat komponen dimuat
+  useEffect(() => {
+    async function fetchNavProducts() {
+      try {
+        const res = await fetch("/api/product");
+        if (res.ok) {
+          const data = await res.json();
+          // Mengambil maks 7 produk teratas untuk dipasang di navbar dropdown
+          setDynamicProducts(data.slice(0, 10));
+        }
+      } catch (error) {
+        console.error("Gagal memuat produk di navbar:", error);
+      }
+    }
+    fetchNavProducts();
+  }, []);
 
   const handleMouseEnter = useCallback(() => {
     clearTimeout(closeTimeoutRef.current);
@@ -53,22 +60,14 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
     }, 180);
   }, []);
 
-  // PERBAIKAN LOGIKA LOGOUT
   const handleLogout = async () => {
     try {
       const res = await fetch("/api/logout", { method: "POST" });
       if (res.ok) {
-        // 1. Tutup semua menu modal/dropdown yang terbuka
         setIsMobileMenuOpen(false);
         setIsProfileOpen(false);
-
-        // 2. Kosongkan state user secara instan di client side
         setUser(null);
-
-        // 3. Refresh router agar server menghapus data layout lama
         router.refresh();
-
-        // 4. Paksa hard reload kecil atau arahkan ke home agar session benar-benar bersih
         window.location.href = "/";
       } else {
         alert("Gagal logout, respons server bermasalah.");
@@ -78,11 +77,12 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
       alert("Terjadi kesalahan jaringan saat logout.");
     }
   };
+
   return (
     <>
       {/* Product Dropdown (Desktop Only) */}
       <AnimatePresence onExitComplete={() => { isAnimatingRef.current = false; }}>
-        {isProductOpen && (
+        {isProductOpen && dynamicProducts.length > 0 && (
           <motion.div
             key="product-dropdown"
             initial={{ opacity: 0, clipPath: "inset(0% 0% 100% 0% round 0px)" }}
@@ -101,32 +101,57 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
             <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-black dark:border-white/10">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
                 <div className="flex gap-12 xl:gap-28 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {products.map((hp, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.05 + i * 0.04, type: "spring", stiffness: 500, damping: 30 }}
-                      className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-40*1rem)/6)]"
-                    >
-                      <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-8 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 dark:bg-black dark:group-hover/card:bg-neutral-900">
-                        <img src={hp.image} alt={hp.name} className="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.18)]" />
-                      </div>
-                      <div className="mt-4 text-center flex flex-col items-center gap-1.5">
-                        <span className="text-[15px] font-semibold text-neutral-900 dark:text-white whitespace-nowrap">{hp.name}</span>
-                        {hp.status && (
-                          <span className="text-[10px] text-blue-600 border border-blue-200 bg-blue-50 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300">{hp.status}</span>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
+                  {dynamicProducts.map((hp, i) => {
+                    // PERBAIKAN UTAMA: Gabungkan format Base64 secara aman tanpa merusak string teks dari Server API
+                    let imageSrc = "/placeholder.png";
+                    if (hp.gambar) {
+                      imageSrc = hp.gambar.startsWith("data:")
+                        ? hp.gambar
+                        : `data:image/jpeg;base64,${hp.gambar}`;
+                    }
+
+                    return (
+                      <motion.div
+                        key={hp.id_produk || i}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.05 + i * 0.04, type: "spring", stiffness: 500, damping: 30 }}
+                        onClick={() => {
+                          setIsProductOpen(false);
+                          router.push(`/products/${hp.nama}`);
+                        }}
+                        className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-40*1rem)/6)]"
+                      >
+                        <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-6 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 dark:bg-black dark:group-hover/card:bg-neutral-900">
+                          <img
+                            src={imageSrc}
+                            alt={hp.jenis || hp.nama}
+                            className="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.14)]"
+                          />
+                        </div>
+                        <div className="mt-4 text-center flex flex-col items-center gap-1.5 w-full">
+                          <span className="text-[14px] font-semibold text-neutral-900 dark:text-white block truncate max-w-full px-1">
+                            {hp.jenis || hp.nama}
+                          </span>
+                          {/* Status dinamis sisa stok dari database */}
+                          {hp.stok > 0 ? (
+                            <span className="text-[9px] text-blue-600 border border-blue-200 bg-blue-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300">
+                              Ready
+                            </span>
+                          ) : (
+                            <span className="text-[9px] text-red-600 border border-red-200 bg-red-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-red-950 dark:border-red-800 dark:text-red-300">
+                              Habis
+                            </span>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="flex justify-center gap-8 py-5 border-t border-neutral-100 dark:border-white/10">
-                <Link href={'/products'} asChild>
-                  <button className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-all bg-slate-100 dark:bg-neutral-800 rounded-full p-3 cursor-pointer shadow border-neutral-400 border hover:scale-110">
-                    Tampilkan Semua Produk
-                  </button>
+                <Link href={'/products'} className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-all bg-slate-100 dark:bg-neutral-800 rounded-full py-2.5 px-5 cursor-pointer shadow border border-neutral-300 dark:border-neutral-700 hover:scale-105">
+                  Tampilkan Semua Produk
                 </Link>
               </div>
             </div>
@@ -153,7 +178,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
               transition={{ type: "spring", damping: 25, stiffness: 180, mass: 0.8 }}
               className="fixed inset-y-0 left-0 z-[100] w-[85%] bg-white dark:bg-neutral-950 p-6 shadow-[20px_0_60px_-15px_rgba(0,0,0,0.3)] sm:hidden flex flex-col"
             >
-              {/* Header Menu */}
               <div className="flex justify-between items-center mb-10">
                 <motion.span
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -173,7 +197,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                 </motion.button>
               </div>
 
-              {/* Navigation Links */}
               <nav className="flex flex-col gap-2 flex-1">
                 {navItems?.map((item, idx) => (
                   <motion.div
@@ -195,7 +218,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                   </motion.div>
                 ))}
 
-                {/* Bagian Bawah Mobile Nav */}
                 <div className="mt-auto mb-6">
                   {user ? (
                     <div className="flex flex-col gap-4">
@@ -226,7 +248,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                     </div>
                   ) : (
                     <div className="flex flex-col gap-4">
-                      {/* Tampilan Box untuk Guest di Mobile */}
                       <div className="flex items-center gap-3 px-3 py-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl">
                         <div className="p-2.5 bg-neutral-200 dark:bg-neutral-800 rounded-xl text-neutral-500 dark:text-neutral-400">
                           <User size={20} />
@@ -296,14 +317,13 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
 
           <div className="h-5 w-px bg-neutral-200 dark:bg-white/10 hidden sm:block mx-2" />
 
-          {/* GRUP KANAN DESKTOP (Unified Profile Dropdown) */}
+          {/* GRUP KANAN DESKTOP */}
           <div className="flex items-center gap-1 relative">
             <div
               className="relative"
               onMouseEnter={() => setIsProfileOpen(true)}
               onMouseLeave={() => setIsProfileOpen(false)}
             >
-              {/* Tombol pemicu dropdown yang konstan di desktop */}
               <button
                 className={cn(
                   "flex items-center justify-center p-2.5 rounded-full shadow duration-200 transition-all cursor-pointer",
@@ -315,7 +335,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                 <User size={20} />
               </button>
 
-              {/* Dropdown Menu Desktop Container */}
               <AnimatePresence>
                 {isProfileOpen && (
                   <motion.div
@@ -326,7 +345,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                     className="absolute right-0 mt-2 w-52 rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-100 dark:border-white/10 p-2 shadow-xl z-50 text-left"
                   >
                     {user ? (
-                      /* KONDISI: USER SUDAH LOGIN */
                       <>
                         <div className="px-3 py-2.5 border-b border-neutral-100 dark:border-white/5 mb-1">
                           <p className="text-[11px] text-neutral-400 font-medium uppercase tracking-wider">Signed in as</p>
@@ -352,7 +370,6 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                         </button>
                       </>
                     ) : (
-                      /* KONDISI: USER BELUM LOGIN (GUEST) */
                       <>
                         <div className="px-3 py-2.5 border-b border-neutral-100 dark:border-white/5 mb-1">
                           <p className="text-[11px] text-neutral-400 font-medium uppercase tracking-wider">Selamat Datang</p>

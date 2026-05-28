@@ -1,9 +1,10 @@
 'use client'
+// app/products/[slug]/ProductDetailContent.jsx
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
-import { products, formatPrice } from "@/lib/products"
+import { formatPrice } from "@/lib/products"
 import Link from "next/link"
 
 export default function ProductDetailContent({ user: serverUser }) {
@@ -12,15 +13,41 @@ export default function ProductDetailContent({ user: serverUser }) {
     const pathname = usePathname()
 
     const [user, setUser] = useState(serverUser)
+    const [product, setProduct] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [selectedColor, setSelectedColor] = useState("")
+    const [selectedRAM, setSelectedRAM] = useState("")
+    const [selectedStorage, setSelectedStorage] = useState("")
 
     useEffect(() => {
         setUser(serverUser)
     }, [serverUser])
 
-    const product = products.find((p) => p.slug === params.slug)
+    useEffect(() => {
+        async function getProductDetail() {
+            try {
+                const res = await fetch(`/api/product/${params.slug}`)
+                if (res.ok) {
+                    const data = await res.json()
+                    setProduct(data)
+                    if (data.colors?.length > 0) setSelectedColor(data.colors[0])
 
-    const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || "")
-    const [selectedStorage, setSelectedStorage] = useState(product?.storage?.[0] || "")
+                    // Ambil RAM dari objek specs atau properti root jika sudah di-mapping di API
+                    const ramValue = data.specs?.RAM || data.RAM
+                    if (ramValue) {
+                        setSelectedRAM(ramValue.includes("GB") ? ramValue : `${ramValue} GB`)
+                    }
+
+                    if (data.storage?.length > 0) setSelectedStorage(data.storage[0])
+                }
+            } catch (err) {
+                console.error("Gagal memuat detail produk:", err)
+            } finally {
+                loading && setLoading(false)
+            }
+        }
+        if (params.slug) getProductDetail()
+    }, [params.slug])
 
     const handleBuyNow = () => {
         if (!user) {
@@ -37,7 +64,6 @@ export default function ProductDetailContent({ user: serverUser }) {
             text: `Cek ${product?.title} ini di VersePhone!`,
             url: window.location.href,
         }
-
         if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
             try {
                 await navigator.share(shareData)
@@ -54,6 +80,8 @@ export default function ProductDetailContent({ user: serverUser }) {
         }
     }
 
+    if (loading) return <div className="min-h-screen flex items-center justify-center dark:text-white">Memuat Detail Spesifikasi...</div>
+
     if (!product) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen">
@@ -62,6 +90,9 @@ export default function ProductDetailContent({ user: serverUser }) {
             </div>
         )
     }
+
+    // Mengambil nilai RAM untuk tombol opsi varian
+    const ramOptions = product.specs?.RAM ? [product.specs.RAM] : (product.RAM ? [`${product.RAM} GB`] : [])
 
     return (
         <div className="min-h-screen bg-white dark:bg-neutral-900 pb-20">
@@ -87,18 +118,12 @@ export default function ProductDetailContent({ user: serverUser }) {
                             className="sticky top-32 bg-slate-50 dark:bg-neutral-800/50 rounded-[40px] p-8 lg:p-16 flex justify-center items-center overflow-hidden"
                         >
                             <motion.img
-                                layoutId={`product-image-${product.id}`}
                                 src={product.image}
                                 alt={product.title}
                                 className="max-h-[500px] w-auto object-contain drop-shadow-2xl"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ duration: 0.5 }}
                             />
-                            {product.badge && (
-                                <span className="absolute top-8 left-8 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">
-                                    {product.badge}
-                                </span>
-                            )}
                         </motion.div>
                     </div>
 
@@ -109,24 +134,12 @@ export default function ProductDetailContent({ user: serverUser }) {
                             <h1 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white leading-[1.1]">
                                 {product.title}
                             </h1>
-                            <div className="flex items-center gap-3 mt-4 text-sm font-medium">
-                                <div className="flex items-center bg-amber-400/10 text-amber-600 px-2 py-1 rounded-md">
-                                    ★ <span className="ml-1 font-bold">{product.rating}</span>
-                                </div>
-                                <span className="text-slate-300">|</span>
-                                <span className="text-slate-500">{product.reviews} Ulasan Pembeli</span>
-                            </div>
                         </section>
 
-                        {/* HARGA */}
+                        {/* HARGA & STOK */}
                         <section className="py-6 border-y border-slate-100 dark:border-white/5">
                             <div className="flex items-baseline gap-4">
                                 <span className="text-4xl font-black text-blue-600">{formatPrice(product.price)}</span>
-                                {product.originalPrice > product.price && (
-                                    <span className="text-xl text-slate-400 line-through font-medium">
-                                        {formatPrice(product.originalPrice)}
-                                    </span>
-                                )}
                             </div>
                             <p className="text-green-600 text-sm font-bold mt-2 flex items-center gap-2">
                                 <span className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
@@ -135,42 +148,67 @@ export default function ProductDetailContent({ user: serverUser }) {
                         </section>
 
                         {/* PILIH WARNA */}
-                        <section className="space-y-4">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilihan Warna</h3>
-                            <div className="flex flex-wrap gap-3">
-                                {product.colors?.map((color) => (
-                                    <button
-                                        key={color}
-                                        onClick={() => setSelectedColor(color)}
-                                        className={`px-5 py-2.5 rounded-xl border-2 font-bold text-sm transition-all ${selectedColor === color
-                                            ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
-                                            : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
-                                            }`}
-                                    >
-                                        {color}
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
+                        {product.colors?.length > 0 && (
+                            <section className="space-y-4">
+                                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilihan Warna</h3>
+                                <div className="flex flex-wrap gap-3">
+                                    {product.colors.map((color) => (
+                                        <button
+                                            key={color}
+                                            onClick={() => setSelectedColor(color)}
+                                            className={`px-5 py-2.5 rounded-xl border-2 font-bold text-sm transition-all ${selectedColor === color
+                                                ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
+                                                : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
+                                                }`}
+                                        >
+                                            {color}
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* PILIH RAM (BARU) */}
+                        {ramOptions.length > 0 && (
+                            <section className="space-y-4">
+                                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilihan Kapasitas RAM</h3>
+                                <div className="flex flex-wrap gap-3">
+                                    {ramOptions.map((ram) => (
+                                        <button
+                                            key={ram}
+                                            onClick={() => setSelectedRAM(ram)}
+                                            className={`px-5 py-2.5 rounded-xl border-2 font-bold text-sm transition-all ${selectedRAM === ram
+                                                ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
+                                                : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
+                                                }`}
+                                        >
+                                            {ram}
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
 
                         {/* PILIH STORAGE */}
-                        <section className="space-y-4">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilih Kapasitas</h3>
-                            <div className="grid grid-cols-2 gap-3">
-                                {product.storage?.map((size) => (
-                                    <button
-                                        key={size}
-                                        onClick={() => setSelectedStorage(size)}
-                                        className={`py-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedStorage === size
-                                            ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
-                                            : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
-                                            }`}
-                                    >
-                                        {size}
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
+                        {product.storage?.length > 0 && (
+                            <section className="space-y-4">
+                                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilih Kapasitas Internal Storage</h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {product.storage.map((size) => (
+                                        <button
+                                            key={size}
+                                            onClick={() => setSelectedStorage(size)}
+                                            className={`py-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedStorage === size
+                                                ? 'border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-900/20'
+                                                : 'border-slate-100 dark:border-white/5 dark:text-white hover:border-slate-200'
+                                                }`}
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
 
                         {/* TOMBOL AKSI */}
                         <div className="flex flex-col gap-4 pt-4">
@@ -183,25 +221,20 @@ export default function ProductDetailContent({ user: serverUser }) {
                                     Beli Sekarang
                                 </motion.button>
                             </motion.div>
-                            <div className="grid grid-cols-2 gap-3">
-                                <button className="py-4 border border-slate-200 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white hover:bg-slate-50 dark:hover:bg-neutral-800 transition-colors">
-                                    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                                    Wishlist
-                                </button>
-
+                            <div className="grid grid-cols-1 gap-3">
                                 <button
                                     onClick={handleShare}
-                                    className="py-4 border border-slate-200 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white hover:bg-slate-50 dark:hover:bg-neutral-800 transition-colors"
+                                    className="py-4 border border-slate-300 dark:border-white/10 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 dark:text-white hover:bg-slate-50 dark:hover:bg-neutral-800 transition-colors"
                                 >
                                     <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
-                                    Share
+                                    Share Produk
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* SPESIFIKASI */}
+                {/* SPESIFIKASI DINAMIS */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
