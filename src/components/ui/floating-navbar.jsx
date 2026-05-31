@@ -8,12 +8,21 @@ import { useRouter } from "next/navigation";
 import { NavSearch } from "./floating-search";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
 
+// Helper untuk membuat slug URL yang aman
+const createSlug = (text) => {
+  if (!text) return "";
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
 export const FloatingNav = ({ navItems, user: serverUser, className }) => {
   const [isProductOpen, setIsProductOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
-  // State untuk menampung data produk dari database secara dinamis
   const [dynamicProducts, setDynamicProducts] = useState([]);
   const [user, setUser] = useState(serverUser);
 
@@ -22,23 +31,17 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
   const isAnimatingRef = useRef(false);
   const router = useRouter();
 
-  useEffect(() => {
-    setUser(serverUser);
-  }, [serverUser]);
+  useEffect(() => { setUser(serverUser); }, [serverUser]);
 
-  // Fetching data produk dinamis dari database saat komponen dimuat
   useEffect(() => {
     async function fetchNavProducts() {
       try {
         const res = await fetch("/api/product");
         if (res.ok) {
           const data = await res.json();
-          // Mengambil maks 7 produk teratas untuk dipasang di navbar dropdown
           setDynamicProducts(data.slice(0, 10));
         }
-      } catch (error) {
-        console.error("Gagal memuat produk di navbar:", error);
-      }
+      } catch (error) { console.error("Error:", error); }
     }
     fetchNavProducts();
   }, []);
@@ -47,118 +50,62 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
     clearTimeout(closeTimeoutRef.current);
     clearTimeout(openTimeoutRef.current);
     openTimeoutRef.current = setTimeout(() => {
-      if (!isAnimatingRef.current) {
-        setIsProductOpen(true);
-      }
+      if (!isAnimatingRef.current) setIsProductOpen(true);
     }, 60);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     clearTimeout(openTimeoutRef.current);
-    closeTimeoutRef.current = setTimeout(() => {
-      setIsProductOpen(false);
-    }, 180);
+    closeTimeoutRef.current = setTimeout(() => { setIsProductOpen(false); }, 180);
   }, []);
 
   const handleLogout = async () => {
-    try {
-      const res = await fetch("/api/logout", { method: "POST" });
-      if (res.ok) {
-        setIsMobileMenuOpen(false);
-        setIsProfileOpen(false);
-        setUser(null);
-        router.refresh();
-        window.location.href = "/";
-      } else {
-        alert("Gagal logout, respons server bermasalah.");
-      }
-    } catch (error) {
-      console.error("Error logout:", error);
-      alert("Terjadi kesalahan jaringan saat logout.");
-    }
+    const res = await fetch("/api/logout", { method: "POST" });
+    if (res.ok) { window.location.href = "/"; }
   };
 
   return (
     <>
-      {/* Product Dropdown (Desktop Only) */}
+      {/* Product Dropdown */}
       <AnimatePresence onExitComplete={() => { isAnimatingRef.current = false; }}>
         {isProductOpen && dynamicProducts.length > 0 && (
           <motion.div
-            key="product-dropdown"
+            className="fixed top-0 left-0 w-full z-[40] hidden sm:block"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             initial={{ opacity: 0, clipPath: "inset(0% 0% 100% 0% round 0px)" }}
             animate={{ opacity: 1, clipPath: "inset(0% 0% 0% 0% round 0px)" }}
             exit={{ opacity: 0, clipPath: "inset(0% 0% 100% 0% round 0px)" }}
-            transition={{
-              clipPath: { type: "spring", stiffness: 320, damping: 32, mass: 0.8 },
-              opacity: { duration: 0.12, ease: "easeOut" },
-            }}
-            onAnimationStart={() => { isAnimatingRef.current = true; }}
-            onAnimationComplete={() => { isAnimatingRef.current = false; }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className="fixed top-0 left-0 w-full z-[40] hidden sm:block"
           >
-            <div className="w-full bg-white border-b border-neutral-100 shadow-lg shadow-black/[0.06] dark:bg-black dark:border-white/10">
+            <div className="w-full bg-white border-b border-neutral-100 shadow-lg dark:bg-black">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
-                <div className="flex gap-12 xl:gap-28 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {dynamicProducts.map((hp, i) => {
-                    // PERBAIKAN UTAMA: Gabungkan format Base64 secara aman tanpa merusak string teks dari Server API
-                    let imageSrc = "/placeholder.png";
-                    if (hp.gambar) {
-                      imageSrc = hp.gambar.startsWith("data:")
-                        ? hp.gambar
-                        : `data:image/jpeg;base64,${hp.gambar}`;
-                    }
-
-                    return (
-                      <motion.div
-                        key={hp.id_produk || i}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.05 + i * 0.04, type: "spring", stiffness: 500, damping: 30 }}
-                        onClick={() => {
-                          setIsProductOpen(false);
-                          router.push(`/products/${hp.nama}`);
-                        }}
-                        className="flex flex-col items-center group/card cursor-pointer flex-shrink-0 w-[calc((100%-40*1rem)/6)]"
-                      >
-                        <div className="w-full aspect-[3/4] rounded-[12px] bg-white flex items-center justify-center p-6 transition-all duration-500 group-hover/card:scale-[1.04] group-hover/card:bg-neutral-100 dark:bg-black dark:group-hover/card:bg-neutral-900">
-                          <img
-                            src={imageSrc}
-                            alt={hp.jenis || hp.nama}
-                            className="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.14)]"
-                          />
-                        </div>
-                        <div className="mt-4 text-center flex flex-col items-center gap-1.5 w-full">
-                          <span className="text-[14px] font-semibold text-neutral-900 dark:text-white block truncate max-w-full px-1">
-                            {hp.jenis || hp.nama}
-                          </span>
-                          {/* Status dinamis sisa stok dari database */}
-                          {hp.stok > 0 ? (
-                            <span className="text-[9px] text-blue-600 border border-blue-200 bg-blue-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300">
-                              Ready
-                            </span>
-                          ) : (
-                            <span className="text-[9px] text-red-600 border border-red-200 bg-red-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-red-950 dark:border-red-800 dark:text-red-300">
-                              Habis
-                            </span>
-                          )}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                <div className="flex gap-12 overflow-x-auto scroll-smooth">
+                  {dynamicProducts.map((hp, i) => (
+                    <motion.div
+                      key={hp.id_produk || i}
+                      onClick={() => {
+                        setIsProductOpen(false);
+                        const slug = createSlug(hp.jenis || hp.nama);
+                        router.push(`/products/${slug}`);
+                      }}
+                      className="cursor-pointer w-[150px] flex-shrink-0"
+                    >
+                      <div className="w-full aspect-[3/4] rounded-[12px] bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center p-4">
+                        <img
+                          src={hp.gambar?.startsWith("data:") ? hp.gambar : `data:image/jpeg;base64,${hp.gambar}`}
+                          alt={hp.jenis}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <p className="mt-2 text-center text-sm font-semibold">{hp.jenis || hp.nama}</p>
+                    </motion.div>
+                  ))}
                 </div>
-              </div>
-              <div className="flex justify-center gap-8 py-5 border-t border-neutral-100 dark:border-white/10">
-                <Link href={'/products'} className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-all bg-slate-100 dark:bg-neutral-800 rounded-full py-2.5 px-5 cursor-pointer shadow border border-neutral-300 dark:border-neutral-700 hover:scale-105">
-                  Tampilkan Semua Produk
-                </Link>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
       {/* Mobile Menu Backdrop & Content */}
       <AnimatePresence>
         {isMobileMenuOpen && (

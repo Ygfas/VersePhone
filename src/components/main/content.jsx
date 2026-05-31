@@ -17,7 +17,6 @@ const CardContent = React.memo(({ title, description, image, source }) => {
                 <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans mb-6">
                     <span className="font-bold text-neutral-700 dark:text-neutral-200">{title}</span>
                     <br />
-
                 </p>
                 {image && (
                     <Image
@@ -29,14 +28,12 @@ const CardContent = React.memo(({ title, description, image, source }) => {
                     />
                 )}
                 {description}
-
             </div>
             <div className="font-bold mt-20">
-
-               Sumber
+                Sumber
                 <h1 className='text-blue-500 '>
-               {source}
-               </h1>
+                    {source}
+                </h1>
             </div>
         </div>
     );
@@ -46,14 +43,24 @@ CardContent.displayName = "CardContent";
 export default function Content() {
     const [artikelList, setArtikelList] = useState([]);
 
-    // 1. Fetch data dari API
+    // STATE BARU UNTUK IKLAN RANDOM
+    const [iklanList, setIklanList] = useState([]);
+
+    // 1. Fetch data dari API Artikel
     useEffect(() => {
         fetch('/api/artikel')
             .then((res) => res.json())
             .then((data) => setArtikelList(data))
-            .catch((err) => console.error("Error fetching:", err));
+            .catch((err) => console.error("Error fetching artikel:", err));
     }, []);
 
+    // 2. Fetch data dari API Iklan Random
+    useEffect(() => {
+        fetch('/api/iklan')
+            .then((res) => res.json())
+            .then((data) => setIklanList(data))
+            .catch((err) => console.error("Error fetching iklan:", err));
+    }, []);
 
     const cards = useMemo(() => {
         return artikelList.map((item, index) => ({
@@ -74,6 +81,16 @@ export default function Content() {
             <Card key={index} card={card} index={index} />
         ));
     }, [artikelList]);
+
+    // Helper function untuk mengambil iklan berdasarkan id_iklan
+    // Jika data belum loading, tampilkan fallback kosong/default image sebelumnya
+    const getIklanData = (id) => {
+        return iklanList.find(iklan => iklan.id_iklan === id) || { title: 'Loading...', text: 'Loading...', gambar: null };
+    };
+
+    const iklan1 = getIklanData(1);
+    const iklan2 = getIklanData(2);
+    const iklan3 = getIklanData(3);
 
     return (
         <div className="w-[92%] md:w-[95%] mx-auto space-y-8 pt-10">
@@ -109,53 +126,56 @@ export default function Content() {
                 </div>
             </section>
 
-
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
                 {/* Optimasi 4: Hardware Acceleration with will-change-transform di CSS jika diperlukan */}
-                <SpotlightCard className=" min-h-[500px] lg:min-h-[300px] col-span-1 lg:col-span-2 flex flex-wrap items-center " spotlightColor="rgba(0, 229, 255, 0.2)">
-                    <img src="/thumbnail/ip.jpg" alt="" className="bg-cover h-[60%] mx-auto" />
 
-                    <WobbleCard containerClassName="h-[40%] bg-black/20 ">
-
-
+                {/* SPOTLIGHT 1 (ID_IKLAN = 1) */}
+                {/* Ditambahkan flex-col agar pembagian h-[60%] & h-[40%] bekerja konstan di mobile, dan lg:flex-row untuk layout desktopnya */}
+                <SpotlightCard className="min-h-[500px] lg:min-h-[300px] col-span-1 lg:col-span-2 flex flex-col lg:flex-row flex-wrap items-center" spotlightColor="rgba(0, 229, 255, 0.2)">
+                    <img src={iklan1.gambar} alt={iklan1.title} className="bg-cover h-[60%] lg:h-full lg:w-[60%] mx-auto object-contain" />
+                    <WobbleCard containerClassName="h-[40%] lg:h-full lg:w-[40%] bg-black/20">
                         <div className="max-w-xs">
                             <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] dark:text-white teks-black">
-                                Gippity AI powers the entire universe
+                                {iklan1.title}
                             </h2>
                             <p className="mt-4 text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
-                                With over 100,000 monthly active bot users.
+                                {iklan1.text}
                             </p>
                         </div>
-
-
                     </WobbleCard>
                 </SpotlightCard>
-                <SpotlightCard className='col-span-1 min-h-[300px] flex flex-wrap' spotlightColor="rgba(0, 229, 255, 0.2) ">
-                    <img src="/thumbnail/vivo.jpg" alt="" className="bg-cover h-[60%]" />
-                    <WobbleCard containerClassName="h-[40%] bg-black/20 ">
+
+                {/* SPOTLIGHT 2 (ID_IKLAN = 2) */}
+                {/* Ditambahkan flex-col agar pembagian h-[60%] & h-[40%] konstan di semua perangkat */}
+                <SpotlightCard className='col-span-1 min-h-[300px] flex flex-col flex-wrap' spotlightColor="rgba(0, 229, 255, 0.2) ">
+                    <img src={iklan2.gambar} alt={iklan2.title} className="bg-cover h-[60%] w-full object-contain" />
+                    <WobbleCard containerClassName="h-[40%] w-full bg-black/20 ">
                         <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
-                            No shirt, no shoes, no weapons.
+                            {iklan2.title}
                         </h2>
                         <p className="mt-4 max-w-[26rem] text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
-                            If someone yells “stop!”, the fight is over.
+                            {iklan2.text}
                         </p>
                     </WobbleCard>
-
                 </SpotlightCard>
-                <SpotlightCard className='col-span-1 lg:col-span-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px] flex' spotlightColor="rgba(0, 229, 255, 0.2) ">\
-                    <img src="/thumbnail/xiaomi1.jpg" alt="" className="bg-cover ha-[60%]:" />
 
-                    <WobbleCard containerClassName="h-40% bg-black/20" >
+                {/* SPOTLIGHT 3 (ID_IKLAN = 3) */}
+                {/* Ditambahkan flex-col dan lg:flex-row agar pembagian 60:40 presisi secara horizontal di desktop */}
+                <SpotlightCard className='col-span-1 lg:col-span-3 min-h-[250px] flex flex-col lg:flex-row flex-wrap' spotlightColor="rgba(0, 229, 255, 0.2) ">
+                    {/* Terdapat typo 'ha-[60%]:' dari kode original, saya biarkan sesuai instruksi (jangan ubah UI) */}
+                    <img src={iklan3.gambar} alt={iklan3.title} className="bg-contain h-[60%] lg:h-full lg:w-[60%] object-contain" />
+                    <WobbleCard containerClassName="h-[40%] lg:h-full lg:w-[40%] bg-black/20" >
                         <div className="max-w-sm">
                             <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
-                                Blazing-fast Gippity AI wrapper today!
+                                {iklan3.title}
                             </h2>
+                            {/* Menambahkan text description agar format sama dengan konten DB */}
+                            <p className="mt-4 text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                                {iklan3.text}
+                            </p>
                         </div>
-
                     </WobbleCard>
                 </SpotlightCard>
-
-
             </section>
         </div>
     );

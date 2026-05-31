@@ -21,12 +21,21 @@ export const NavSearch = () => {
                 if (res.ok) {
                     const data = await res.json();
 
-                    const localizedData = data.map(item => ({
-                        id: item.id_produk,
-                        name: item.jenis || item.nama, // Menampilkan Jenis (Model) perangkat
-                        brandName: item.nama,          // Menyimpan nama/brand asli untuk opsi fallback pencarian
-                        slug: item.nama                // Identifier routing detail
-                    }));
+                    // ... di dalam useEffect loadProducts NavSearch
+                    const localizedData = data.map(item => {
+                        // Gunakan logika slugify yang sama dengan halaman katalog
+                        const slugified = (item.jenis || item.nama)
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/(^-|-$)+/g, '');
+
+                        return {
+                            id: item.id_produk,
+                            name: item.jenis || item.nama,
+                            brandName: item.nama,
+                            slug: slugified // Sekarang hasil slug-nya sudah rapi (misal: xiaomi-17-ultra)
+                        };
+                    });
                     setProducts(localizedData);
                 }
             } catch (err) {
@@ -70,33 +79,24 @@ export const NavSearch = () => {
     const handleSuggestionClick = (slug) => {
         setIsOpen(false);
         setQuery("");
+        
         router.push(`/products/${slug}`);
     };
 
-    // 4. Aturan jika menekan Enter di kolom search (Bisa deteksi jenis langsung atau melempar query ke katalog)
+    // 4. Aturan jika menekan Enter di kolom search
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             const trimmedQuery = query.trim();
 
             if (!trimmedQuery) return;
 
-            // Jika ada hasil yang cocok di dropdown (baik 1 atau lebih), lempar parameter ke URL katalog
-            if (filteredProducts.length > 0) {
-                setIsOpen(false);
-                setQuery("");
-                setErrorMsg("");
-                router.push(`/products?search=${encodeURIComponent(trimmedQuery.toLowerCase())}`);
-                return;
-            }
-
-            // OPSI TERBARU: Jika produk BENAR-BENAR tidak terdaftar di database (filteredProducts kosong)
-            // Tetap lempar ke page product utama agar halaman tersebut menampilkan pesan "Tidak ada produk..."
             setIsOpen(false);
             setQuery("");
             setErrorMsg("");
             router.push(`/products?search=${encodeURIComponent(trimmedQuery.toLowerCase())}`);
         }
     };
+
     return (
         <div className="relative flex items-center">
             <AnimatePresence mode="wait">

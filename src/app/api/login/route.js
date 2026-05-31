@@ -1,50 +1,66 @@
+// app/api/login/route.js
 import { NextResponse } from "next/server";
-import pool from "@/lib/db"; // Menggunakan koneksi pool milikmu
+import pool from "@/lib/db";
+import bcrypt from "bcryptjs"; // Ubah ke bcryptjs
 
 export async function POST(request) {
   try {
     const { emailOrUsername, password } = await request.json();
 
-    // Query ke tabel 'user' menggunakan pool yang sudah kamu buat
-    const [rows] = await pool.query(
-      "SELECT * FROM user WHERE (email = ? OR username = ?) AND password = ?",
-      [emailOrUsername, emailOrUsername, password]
+    if (!emailOrUsername || !password) {
+      return NextResponse.json(
+        { message: "Email/Username dan password wajib diisi!" },
+        { status: 400 }
+      );
+    }
+
+    const identifier = emailOrUsername.trim().toLowerCase();
+
+    // Cari berdasarkan email ATAU username
+    const [users] = await pool.query(
+      "SELECT * FROM user WHERE email = ? OR username = ?",
+      [identifier, identifier]
     );
 
-    // Jika user tidak ditemukan atau password salah
-    if (rows.length === 0) {
+    if (users.length === 0) {
       return NextResponse.json(
-        { message: "Email/Username atau password salah!" },
+        { message: "Email atau Username tidak ditemukan." },
         { status: 401 }
       );
     }
 
-    const user = rows[0];
+    const user = users[0];
+    let isPasswordValid = false;
 
-    // Buat response sukses dan kirim role ke frontend
-    const response = NextResponse.json(
-      { message: "Login berhasil", role: user.role },
+    // Deteksi jika password merupakan Bcrypt hash (panjangnya biasanya 60 karakter & diawali $2)
+    const isBcryptHash =
+      user.password.startsWith("$2") && user.password.length === 60;
+
+    if (isBcryptHash) {
+      isPasswordValid = await bcrypt.compare(password, user.password);
+    } else {
+      // Fallback untuk akun lama di DB (aaa / bbb) yang pakai plain text
+      isPasswordValid = password === user.password;
+    }
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { message: "Password yang Anda masukkan salah." },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        role: user.role,
+        message: "Login berhasil!",
+      },
       { status: 200 }
     );
-
-    // Set Cookie agar halaman utama ('/') tahu bahwa user sudah login (logged)
-    response.cookies.set({
-      name: "user_session",
-      value: JSON.stringify({
-        id: user.id_user,
-        role: user.role,
-        username: user.username,
-      }),
-      httpOnly: true, // Aman dari pembacaan script Client-Side (XSS)
-      path: "/",
-      maxAge: 60 * 60 * 24, // Berlaku selama 1 hari
-    });
-
-    return response;
   } catch (error) {
-    // Mengembalikan pesan error jika terjadi kegagalan database/server
+    console.error("Login Error:", error);
     return NextResponse.json(
-      { message: "Terjadi kesalahan pada server", details: error.message },
+      { message: "Terjadi kesalahan pada server." },
       { status: 500 }
     );
   }

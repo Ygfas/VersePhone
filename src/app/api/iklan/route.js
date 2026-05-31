@@ -1,22 +1,36 @@
-// app/api/artikel/route.js
+// app/api/iklan/route.js
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
+import mysql from "mysql2/promise"; // Pastikan sudah install: npm install mysql2
 
 export async function GET() {
   try {
-    const [rows] = await pool.query("SELECT * FROM iklan_random");
+    // Sesuaikan dengan konfigurasi database lokal kamu
+    const connection = await mysql.createConnection({
+      host: "127.0.0.1",
+      user: "root",
+      password: "",
+      database: "db_versephone",
+    });
 
-   
-    const formattedRows = rows.map((row) => ({
-      ...row,
-      gambar_artikel: row.gambar_artikel
-        ? `data:image/jpeg;base64,${Buffer.from(row.gambar_artikel).toString(
-            "base64"
-          )}`
-        : null,
-    }));
+    const [rows] = await connection.execute("SELECT * FROM iklan_random");
+    await connection.end();
 
-    return NextResponse.json(formattedRows, { status: 200 });
+    // Konversi BLOB ke base64 agar bisa dirender di HTML
+    const data = rows.map((row) => {
+      let base64Image = null;
+      if (row.gambar) {
+        // Mengubah buffer menjadi base64 string
+        base64Image = `data:image/jpeg;base64,${Buffer.from(
+          row.gambar
+        ).toString("base64")}`;
+      }
+      return {
+        ...row,
+        gambar: base64Image,
+      };
+    });
+
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
