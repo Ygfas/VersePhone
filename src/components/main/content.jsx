@@ -135,10 +135,10 @@ export default function Content() {
                     <img src={iklan1.gambar} alt={iklan1.title} className="bg-cover h-[60%] lg:h-full lg:w-[60%] mx-auto object-contain" />
                     <WobbleCard containerClassName="h-[40%] lg:h-full lg:w-[40%] bg-black/20">
                         <div className="max-w-xs">
-                            <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] dark:text-white teks-black">
+                            <h2 className="text-left text-balance text-base md:text-xl lg:text-4xl font-semibold tracking-[-0.015em] dark:text-white teks-black">
                                 {iklan1.title}
                             </h2>
-                            <p className="mt-4 text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                            <p className="mt-4 text-left text-base/5 xl:text-lg dark:text-neutral-200 teks-neutral-800">
                                 {iklan1.text}
                             </p>
                         </div>
@@ -150,10 +150,10 @@ export default function Content() {
                 <SpotlightCard className='col-span-1 min-h-[300px] flex flex-col flex-wrap' spotlightColor="rgba(0, 229, 255, 0.2) ">
                     <img src={iklan2.gambar} alt={iklan2.title} className="bg-cover h-[60%] w-full object-contain" />
                     <WobbleCard containerClassName="h-[40%] w-full bg-black/20 ">
-                        <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
+                        <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-4xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
                             {iklan2.title}
                         </h2>
-                        <p className="mt-4 max-w-[26rem] text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                        <p className="mt-4 max-w-[26rem] text-left text-base/5 xl:text-lg dark:text-neutral-200 teks-neutral-800">
                             {iklan2.text}
                         </p>
                     </WobbleCard>
@@ -166,11 +166,11 @@ export default function Content() {
                     <img src={iklan3.gambar} alt={iklan3.title} className="bg-contain h-[60%] lg:h-full lg:w-[60%] object-contain" />
                     <WobbleCard containerClassName="h-[40%] lg:h-full lg:w-[40%] bg-black/20" >
                         <div className="max-w-sm">
-                            <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
+                            <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-4xl font-semibold tracking-[-0.015em] darK:text-white teks-black">
                                 {iklan3.title}
                             </h2>
                             {/* Menambahkan text description agar format sama dengan konten DB */}
-                            <p className="mt-4 text-left text-base/6 dark:text-neutral-200 teks-neutral-800">
+                            <p className="mt-4 text-left text-base/5 xl:text-lg dark:text-neutral-200 teks-neutral-800">
                                 {iklan3.text}
                             </p>
                         </div>

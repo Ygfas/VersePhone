@@ -79,7 +79,8 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
           >
             <div className="w-full bg-white border-b border-neutral-100 shadow-lg dark:bg-black">
               <div className="max-w-[1400px] mx-auto px-4 pt-26 pb-6">
-                <div className="flex gap-12 overflow-x-auto scroll-smooth">
+                {/* 1. Tambahkan utility untuk hide scrollbar di sini */}
+                <div className="flex gap-12 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {dynamicProducts.map((hp, i) => (
                     <motion.div
                       key={hp.id_produk || i}
@@ -88,7 +89,8 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                         const slug = createSlug(hp.jenis || hp.nama);
                         router.push(`/products/${slug}`);
                       }}
-                      className="cursor-pointer w-[150px] flex-shrink-0"
+                      // 2. Gunakan flex-col dan items-center agar konten di dalamnya center
+                      className="cursor-pointer w-[150px] flex-shrink-0 flex flex-col items-center gap-2"
                     >
                       <div className="w-full aspect-[3/4] rounded-[12px] bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center p-4">
                         <img
@@ -97,10 +99,30 @@ export const FloatingNav = ({ navItems, user: serverUser, className }) => {
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <p className="mt-2 text-center text-sm font-semibold">{hp.jenis || hp.nama}</p>
+
+                      {/* Teks di tengah */}
+                      <p className="text-center text-sm font-semibold truncate w-full px-1">{hp.jenis || hp.nama}</p>
+
+                      {/* Badge otomatis berada di tengah karena parent-nya items-center */}
+                      {hp.stok > 0 ? (
+                        <span className="text-[9px] text-blue-600 border border-blue-200 bg-blue-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300">
+                          Ready
+                        </span>
+                      ) : (
+                        <span className="text-[9px] text-red-600 border border-red-200 bg-red-50 px-2 rounded-full font-bold uppercase tracking-wider dark:bg-red-950 dark:border-red-800 dark:text-red-300">
+                          Habis
+                        </span>
+                      )}
                     </motion.div>
                   ))}
                 </div>
+              </div>
+
+              {/* 3. Footer tetap di tengah */}
+              <div className="flex justify-center items-center py-5 border-t border-neutral-100 dark:border-white/10">
+                <Link href={'/products'} className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-all bg-slate-100 dark:bg-neutral-800 rounded-full py-2.5 px-5 cursor-pointer shadow border border-neutral-300 dark:border-neutral-700 hover:scale-105">
+                  Tampilkan Semua Produk
+                </Link>
               </div>
             </div>
           </motion.div>
