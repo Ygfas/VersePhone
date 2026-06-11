@@ -111,7 +111,7 @@ export default function RegisterForm() {
                         </div>
 
                         <div className="flex flex-col space-y-1.5">
-                            <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
+                            <label htmlFor="phone" className="text-sm font-medium">Nomor seluler</label>
                             <input id="phone" type="tel" required value={formData.phone} onChange={handleInputChange} placeholder="0812xxxx" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
                         </div>
 
@@ -138,7 +138,7 @@ export default function RegisterForm() {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                 >
-                                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                    {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
                                 </button>
                             </div>
 

@@ -55,8 +55,8 @@ export default function Navbar({ user }) {
             <div className="relative flex lg:h-[9vh] h-[8vh] flex-col overflow-y-auto ">
                 <StickyBanner className="bg-gradient-to-b from-red-400 to-red-600 z-[60]">
                     <p className="mx-0 max-w-[90%] text-white drop-shadow-md md:text-xl">
-                        Smartphone baru telah tersedia...!!! {''}
-                        <Link href="#" className="transition duration-200 hover:underline">
+                        Temukan pengalaman baru dengan smartphone terbaru kami... {''}
+                        <Link href="/product" className="transition duration-200  hover:underline">
                             Baca selengkapnya
                         </Link>
                     </p>

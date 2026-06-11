@@ -65,8 +65,9 @@ function SingleLayout() {
     };
     return (
         <>
-            <div className="container mx-auto pb-10 pt-2">
-                <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4">
+            <div className="container mx-auto pb-10 pt-2" >
+                <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4"
+                id='#faq'>
                     FAQ
                 </h1>
                 <div className="h-fit border-2  rounded-lg p-2 dark:bg-[#111111] bg-[#F2F2F2]">

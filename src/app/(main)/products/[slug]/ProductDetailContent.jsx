@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { formatPrice } from "@/lib/products"
 import Link from "next/link"
 
+
 export default function ProductDetailContent({ user: serverUser }) {
     const params = useParams()
     const router = useRouter()
@@ -32,7 +33,6 @@ export default function ProductDetailContent({ user: serverUser }) {
                     setProduct(data)
                     if (data.colors?.length > 0) setSelectedColor(data.colors[0])
 
-                    // Ambil RAM dari objek specs atau properti root jika sudah di-mapping di API
                     const ramValue = data.specs?.RAM || data.RAM
                     if (ramValue) {
                         setSelectedRAM(ramValue.includes("GB") ? ramValue : `${ramValue} GB`)
@@ -43,7 +43,7 @@ export default function ProductDetailContent({ user: serverUser }) {
             } catch (err) {
                 console.error("Gagal memuat detail produk:", err)
             } finally {
-                loading && setLoading(false)
+                setLoading(false)
             }
         }
         if (params.slug) getProductDetail()
@@ -53,9 +53,27 @@ export default function ProductDetailContent({ user: serverUser }) {
         if (!user) {
             alert("Kamu harus login terlebih dahulu untuk melakukan checkout!")
             router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
-        } else {
-            router.push("/payment")
+            return
         }
+
+        // Gunakan product.id (id_produk dari DB) sebagai productId
+        const targetId = product?.id
+
+        if (!targetId) {
+            alert("Gagal memproses ID Produk. Pastikan data produk telah termuat sempurna.")
+            return
+        }
+
+        // Arahkan ke /payment dengan query params lengkap
+        const query = new URLSearchParams({
+            productId: targetId,
+            slug: params.slug,
+            warna: selectedColor,
+            ram: selectedRAM,
+            storage: selectedStorage,
+        })
+
+        router.push(`/payment?${query.toString()}`)
     }
 
     const handleShare = async () => {
@@ -91,7 +109,6 @@ export default function ProductDetailContent({ user: serverUser }) {
         )
     }
 
-    // Mengambil nilai RAM untuk tombol opsi varian
     const ramOptions = product.specs?.RAM ? [product.specs.RAM] : (product.RAM ? [`${product.RAM} GB`] : [])
 
     return (
@@ -168,7 +185,7 @@ export default function ProductDetailContent({ user: serverUser }) {
                             </section>
                         )}
 
-                        {/* PILIH RAM (BARU) */}
+                        {/* PILIH RAM */}
                         {ramOptions.length > 0 && (
                             <section className="space-y-4">
                                 <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Pilihan Kapasitas RAM</h3>

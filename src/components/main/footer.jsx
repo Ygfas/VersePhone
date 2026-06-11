@@ -40,13 +40,38 @@ const socialIconVariants = {
 
 // Data Navigasi & Sosial Media (Bisa dipindah ke file terpisah)
 const footerLinks = [
-    { name: "Product", links: ["Apple", "Samsung", "Motorola", "Xiaomi","More"] },
-    { name: "Company", links: ["About Us", "Team", "Social Media", "News","Update"] },
-    { name: "Resources", links: ["Blog", "News letter", "Events", "Help Center"] },
+    {
+        name: "Product",
+        links: [
+            { name: "Apple Iphone 17 Pro Max", href: "products/apple-iphone-17-pro-max" },
+            { name: "Samsung Galaxy S26 Ultra", href: "products/samsung-galaxy-s26-ultra" },
+            { name: "Vivo X300 Ultra", href: "/products/vivo-x300-ultra" },
+            { name: "Xiaomi 17 Ultra", href: "products/xiaomi-17-ultra" },
+            { name: "Oppo Find X9 Ultra", href: "products/oppo-find-x9-ultra" },
+            { name: "More", href: "/products" }
+        ]
+    },
+    {
+        name: "Company",
+        links: [
+            { name: "About Us", href: "/about" },
+            { name: "Team", href: "/team" },
+            { name: "Social Media", href: "#social-media" },
+            { name: "Artikel", href: "/artikel" },
+        
+        ]
+    },
+    {
+        name: "Resources",
+        links: [
+            { name: "partner", href: "/about" },
+            { name: "Faq", href: "/contacts/#faq" },
+            { name: "Help Center", href: "/contacts" }
+        ]
+    },
 ];
-
 const socialMedias = [
-    { icon: FiGithub, href: "https://github.com", name: "GitHub" },
+    { icon: FiGithub, href: "https://github.com/Ygfas", name: "GitHub" },
     { icon: FiTwitter, href: "https://twitter.com", name: "Twitter" },
     { icon: FiLinkedin, href: "https://linkedin.com", name: "LinkedIn" },
     { icon: FiInstagram, href: "https://instagram.com", name: "Instagram" },
@@ -71,10 +96,10 @@ export const InteractiveFooter = ({ className }) => {
                     {/* Section 1: Brand & Newsletter */}
                     <motion.div variants={itemVariants} className="col-span-2 md:col-span-3 pr-8">
                         <Link href="/" className="text-2xl font-bold text-neutral-900 dark:text-white">
-                            Interactive<span className="text-purple-600">.</span>
+                           VersePhone<span className="text-purple-600">.</span>
                         </Link>
                         <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-md text-sm leading-relaxed">
-                            Stay ahead with our latest insights. Subscribe to our newsletter for exclusive updates and industry news.
+                            Jadilah yang pertama mengetahui. Bergabunglah dengan lingkaran eksklusif kami untuk mendapatkan wawasan teknologi terbaru dan pembaruan industri langsung di kotak masuk Anda.
                         </p>
                         <div className="mt-6 flex max-w-sm items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-1 shadow-inner shadow-neutral-100 dark:shadow-black/20">
                             <input
@@ -99,17 +124,17 @@ export const InteractiveFooter = ({ className }) => {
                                 {section.name}
                             </h4>
                             <ul className="space-y-3.5">
-                                {section.links.map((link) => (
-                                    <li key={link}>
+                                {section.links.map((link) => ( // link sekarang adalah objek
+                                    <li key={link.name}>
                                         <Link
-                                            href="#"
+                                            href={link.href} // Ubah dari '#' menjadi link.href
                                             className="group flex items-center gap-1.5 text-sm text-neutral-600 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white transition-colors"
                                         >
                                             <motion.span
                                                 className="h-px w-0 bg-purple-600 group-hover:w-3"
                                                 transition={{ duration: 0.3 }}
                                             />
-                                            {link}
+                                            {link.name} {/* Gunakan link.name */}
                                         </Link>
                                     </li>
                                 ))}
@@ -127,7 +152,9 @@ export const InteractiveFooter = ({ className }) => {
                         © {new Date().getFullYear()} VersePhone Inc. All rights reserved.
                     </p>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4"
+                    id="social-media">
+                        
                         {socialMedias.map((social) => (
                             <motion.a
                                 key={social.name}
