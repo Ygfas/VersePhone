@@ -421,34 +421,7 @@ function StepQRIS({ info, product, onBack, onNext }) {
                 </div>
 
                 {/* QR Code Canvas Layout */}
-                <div className="w-48 h-48 bg-zinc-950 rounded-xl flex items-center justify-center relative overflow-hidden p-2 shadow-inner group">
-                    <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-px p-3">
-                        {Array.from({ length: 64 }).map((_, i) => (
-                            <div
-                                key={i}
-                                className={`rounded-[2px] transition-colors duration-500 ${Math.random() > 0.47 ? "bg-zinc-900" : "bg-transparent"
-                                    }`}
-                            />
-                        ))}
-                    </div>
-                    {/* QR corner marks */}
-                    <div className="absolute top-3 left-3 w-9 h-9 border-[4px] border-zinc-900 bg-white rounded-md flex items-center justify-center">
-                        <div className="w-4 h-4 bg-zinc-900 rounded-[2px]" />
-                    </div>
-                    <div className="absolute top-3 right-3 w-9 h-9 border-[4px] border-zinc-900 bg-white rounded-md flex items-center justify-center">
-                        <div className="w-4 h-4 bg-zinc-900 rounded-[2px]" />
-                    </div>
-                    <div className="absolute bottom-3 left-3 w-9 h-9 border-[4px] border-zinc-900 bg-white rounded-md flex items-center justify-center">
-                        <div className="w-4 h-4 bg-zinc-900 rounded-[2px]" />
-                    </div>
-                    {/* Center Logo Placeholder */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border border-zinc-100">
-                            <div className="w-4 h-4 bg-blue-600 rounded-sm" />
-                        </div>
-                    </div>
-                </div>
-
+                <img src="./qr/qr.jpeg" alt="" />
                 <p className="text-center text-zinc-900 font-black text-sm mt-4 tracking-wide">
                     QRIS VersePhone
                 </p>

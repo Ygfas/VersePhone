@@ -3,10 +3,9 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter, usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion" // Tambahkan AnimatePresence
 import { formatPrice } from "@/lib/products"
 import Link from "next/link"
-
 
 export default function ProductDetailContent({ user: serverUser }) {
     const params = useParams()
@@ -19,6 +18,9 @@ export default function ProductDetailContent({ user: serverUser }) {
     const [selectedColor, setSelectedColor] = useState("")
     const [selectedRAM, setSelectedRAM] = useState("")
     const [selectedStorage, setSelectedStorage] = useState("")
+    
+    // State baru untuk mengontrol notifikasi custom
+    const [showAuthAlert, setShowAuthAlert] = useState(false)
 
     useEffect(() => {
         setUser(serverUser)
@@ -51,12 +53,17 @@ export default function ProductDetailContent({ user: serverUser }) {
 
     const handleBuyNow = () => {
         if (!user) {
-            alert("Kamu harus login terlebih dahulu untuk melakukan checkout!")
-            router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
+            // Tampilkan custom alert
+            setShowAuthAlert(true)
+            
+            // Beri jeda 2 detik agar pesan terbaca sebelum pindah halaman
+            setTimeout(() => {
+                setShowAuthAlert(false)
+                router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
+            }, 2000)
             return
         }
 
-        // Gunakan product.id (id_produk dari DB) sebagai productId
         const targetId = product?.id
 
         if (!targetId) {
@@ -64,7 +71,6 @@ export default function ProductDetailContent({ user: serverUser }) {
             return
         }
 
-        // Arahkan ke /payment dengan query params lengkap
         const query = new URLSearchParams({
             productId: targetId,
             slug: params.slug,
@@ -112,7 +118,30 @@ export default function ProductDetailContent({ user: serverUser }) {
     const ramOptions = product.specs?.RAM ? [product.specs.RAM] : (product.RAM ? [`${product.RAM} GB`] : [])
 
     return (
-        <div className="min-h-screen bg-white dark:bg-neutral-900 pb-20">
+        <div className="min-h-screen bg-white dark:bg-neutral-900 pb-20 relative">
+            
+            {/* --- CUSTOM TOAST NOTIFICATION --- */}
+            <AnimatePresence>
+                {showAuthAlert && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                        className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 shadow-xl rounded-2xl px-5 py-3.5 w-[90%] max-w-sm"
+                    >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center">
+                            <svg className="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <p className="text-sm font-medium text-red-800 dark:text-red-300 leading-snug">
+                            Kamu harus login terlebih dahulu untuk melakukan checkout! Mengalihkan...
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            {/* -------------------------------- */}
+
             {/* Sticky Mini Header */}
             <div className="sticky md:top-0 h-30 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-b border-slate-100 dark:border-white/5 py-4 z-[30]">
                 <div className="max-w-7xl mt-5 mx-auto px-6 flex items-center justify-between">
@@ -233,7 +262,8 @@ export default function ProductDetailContent({ user: serverUser }) {
                                 <motion.button
                                     whileTap={{ scale: 0.95 }}
                                     onClick={handleBuyNow}
-                                    className="w-full md:w-[25vw] rounded-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-90 active:scale-[0.98] shadow-lg shadow-blue-600/20"
+                                    disabled={showAuthAlert} // Cegah klik berulang saat alert sedang tampil
+                                    className="w-full md:w-[25vw] rounded-2xl bg-blue-600 py-4 font-bold text-white transition-all hover:opacity-90 active:scale-[0.98] shadow-lg shadow-blue-600/20 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     Beli Sekarang
                                 </motion.button>
